@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    tools {
+        nodejs 'NodeJS' 
+    }
     environment {
         BRANCH_NAME = "${env.BRANCH_NAME}"
         MAIN_BRANCH = "main"
