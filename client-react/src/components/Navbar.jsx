@@ -22,6 +22,9 @@ const AdminNavbar = ({ signOut }) => {
           Admin Dashboard
         </Navbar.Brand>
         <Nav>
+          Profile
+        </Nav>
+        <Nav>
           <Nav.Link 
             onClick={signOut} 
             className="nav-link"

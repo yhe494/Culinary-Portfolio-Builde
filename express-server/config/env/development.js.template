@@ -1,5 +1,0 @@
-module.exports = {
-    db: 'mongodb://localhost/studentsandcourses-db',
-    sessionSecret: 'developmentSessionSecret',
-    secretKey: 'real_secret'
-}; 
