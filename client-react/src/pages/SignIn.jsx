@@ -4,92 +4,123 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import { AuthContext } from '../context/AuthContext';
 import './SignIn.css';
 
-const SignIn = () => {
-  const [studentNumber, setStudentNumber] = useState('');
-  const [password, setPassword] = useState('');
+const AuthPage = () => {
+  const [registerData, setRegisterData] = useState({
+    email: '',
+    firstName: '',
+    lastName: '',
+    password: '',
+    phoneNumber: ''
+  });
+  const [loginData, setLoginData] = useState({
+    email: '',
+    password: ''
+  });
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { setUser } = useContext(AuthContext);
 
-  const handleSubmit = async (e) => {
+  const handleRegisterChange = (e) => {
+    setRegisterData({ ...registerData, [e.target.name]: e.target.value });
+  };
+
+  const handleLoginChange = (e) => {
+    setLoginData({ ...loginData, [e.target.name]: e.target.value });
+  };
+
+  const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    
+    try {
+      const response = await fetch('http://localhost:5001/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(registerData),
+      });
+      
+      const data = await response.json();
+      if (response.ok) {
+        alert('Registration successful! Please log in.');
+      } else {
+        setError(data.message || 'Registration failed');
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      setError('An error occurred during registration. Please try again.');
+    }
+  };
 
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    
     try {
       const response = await fetch('http://localhost:5001/signin', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ studentNumber, password }),
+        body: JSON.stringify(loginData),
       });
-
+      
       const data = await response.json();
-      console.log('Sign-in response:', data); // Debug log
-
       if (response.ok) {
-        if (!data.student) {
-          throw new Error('No student data received');
-        }
-
         localStorage.setItem('token', data.token);
-
-        setUser({
-          studentNumber: data.student.studentNumber,
-          isAdmin: data.student.isAdmin
-        });
-
-        // Navigate based on user role
-        if (data.student.isAdmin) {
-          navigate('/admin');
-        } else {
-          navigate('/student');
-        }
+        setUser({ email: data.user.email, isAdmin: data.user.isAdmin });
+        navigate(data.user.isAdmin ? '/admin' : '/student');
       } else {
-        setError(data.message || 'Sign-in failed');
+        setError(data.message || 'Login failed');
       }
     } catch (error) {
-      console.error('Sign-in error:', error);
-      setError('An error occurred during sign-in. Please try again.');
+      console.error('Login error:', error);
+      setError('An error occurred during login. Please try again.');
     }
   };
 
   return (
-    <div className="signin-container">
-      <div className="signin-form">
-        <h2 className="text-center signin-title">Sign In to Your Account</h2>
-        {error && <Alert variant="danger">{error}</Alert>}
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formStudentNumber" className="form-group">
-            <Form.Control
-              type="text"
-              placeholder="Student Number"
-              value={studentNumber}
-              onChange={(e) => setStudentNumber(e.target.value)}
-              required
-              className="form-control"
-            />
-          </Form.Group>
+    <div className="auth-container">
+      <div className="auth-box">
+        {/* Register Form */}
+        <div className="register-section">
+          <h2 className="text-center">Register</h2>
+          {error && <Alert variant="danger">{error}</Alert>}
+          <Form onSubmit={handleRegisterSubmit}>
+            <Form.Group>
+              <Form.Control type="email" name="email" placeholder="Email" onChange={handleRegisterChange} required />
+            </Form.Group>
+            <Form.Group>
+              <Form.Control type="text" name="firstName" placeholder="First Name" onChange={handleRegisterChange} required />
+            </Form.Group>
+            <Form.Group>
+              <Form.Control type="text" name="lastName" placeholder="Last Name" onChange={handleRegisterChange} required />
+            </Form.Group>
+            <Form.Group>
+              <Form.Control type="password" name="password" placeholder="Password" onChange={handleRegisterChange} required />
+            </Form.Group>
+            <Form.Group>
+              <Form.Control type="text" name="phoneNumber" placeholder="Phone Number" onChange={handleRegisterChange} required />
+            </Form.Group>
+            <Button type="submit">Register</Button>
+          </Form>
+        </div>
 
-          <Form.Group controlId="formPassword" className="form-group">
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="form-control"
-            />
-          </Form.Group>
-
-          <Button type="submit" className="signin-button">
-            Sign In
-          </Button>
-        </Form>
+        {/* Login Form */}
+        <div className="login-section">
+          <h2 className="text-center">Login</h2>
+          {error && <Alert variant="danger">{error}</Alert>}
+          <Form onSubmit={handleLoginSubmit}>
+            <Form.Group>
+              <Form.Control type="email" name="email" placeholder="Email" onChange={handleLoginChange} required />
+            </Form.Group>
+            <Form.Group>
+              <Form.Control type="password" name="password" placeholder="Password" onChange={handleLoginChange} required />
+            </Form.Group>
+            <Button type="submit">Login</Button>
+          </Form>
+        </div>
       </div>
     </div>
   );
 };
 
-export default SignIn;
+export default AuthPage;
