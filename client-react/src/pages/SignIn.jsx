@@ -5,7 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import './SignIn.css';
 
 const SignIn = () => {
-  const [studentNumber, setStudentNumber] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -15,6 +15,8 @@ const SignIn = () => {
     e.preventDefault();
     setError('');
 
+    console.log(JSON.stringify({ email, password }));
+
     try {
       const response = await fetch('http://localhost:5001/signin', {
         method: 'POST',
@@ -22,26 +24,26 @@ const SignIn = () => {
           'Content-Type': 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify({ studentNumber, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
       console.log('Sign-in response:', data); // Debug log
 
       if (response.ok) {
-        if (!data.student) {
+        if (!data.user) {
           throw new Error('No student data received');
         }
 
         localStorage.setItem('token', data.token);
 
         setUser({
-          studentNumber: data.student.studentNumber,
-          isAdmin: data.student.isAdmin
+          email: data.user.email,
+          isAdmin: data.user.isAdmin
         });
 
         // Navigate based on user role
-        if (data.student.isAdmin) {
+        if (data.user.isAdmin) {
           navigate('/admin');
         } else {
           navigate('/student');
@@ -64,9 +66,9 @@ const SignIn = () => {
           <Form.Group controlId="formStudentNumber" className="form-group">
             <Form.Control
               type="text"
-              placeholder="Student Number"
-              value={studentNumber}
-              onChange={(e) => setStudentNumber(e.target.value)}
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
               className="form-control"
             />
