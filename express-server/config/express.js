@@ -10,7 +10,7 @@ var config = require('./config'),
     cors = require('cors');
 
 // Create a new Express application instance
-module.exports = function() {
+module.exports = function () {
     var app = express();
 
     // Development logging
@@ -42,7 +42,7 @@ module.exports = function() {
 
     // CORS configuration
     app.use(cors({
-        origin: 'http://localhost:5173', 
+        origin: 'http://localhost:5173',
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
@@ -60,8 +60,7 @@ module.exports = function() {
 
     // Routes
     require('../app/routes/index.server.routes.js')(app);
-    require('../app/routes/students.server.routes.js')(app);
-    require('../app/routes/courses.server.routes.js')(app);
+    require('../app/routes/users.server.routes.js')(app);
 
     // Static files
     app.use(express.static('./public'));
