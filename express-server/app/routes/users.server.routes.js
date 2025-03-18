@@ -16,9 +16,9 @@ module.exports = function (app) {
         .delete(users.requiresLogin, users.delete);
 
     // Authentication routes
-    app.post('/login', users.authenticate);
-    app.post('/logout', users.signout);
-    app.get('/check-auth', users.isSignedIn);
+    app.post('/signin', users.authenticate);
+    app.post('/signout', users.signout);
+    app.get('/read_cookie', users.isSignedIn);
 
     // Set up route parameter middleware
     app.param('userId', users.userByID);
