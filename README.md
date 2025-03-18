@@ -1,4 +1,5 @@
-# Student Class Management System
+# Culinary-Portfolio-Builder
+
 
 ## 🛠️ Tech Stack
 
