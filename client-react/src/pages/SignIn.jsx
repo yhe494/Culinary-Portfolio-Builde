@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { Form, Button, Alert, Navbar } from 'react-bootstrap';
 import { AuthContext } from '../context/AuthContext';
 import './SignIn.css';
 
@@ -78,6 +78,10 @@ const AuthPage = () => {
   };
 
   return (
+    <>
+    <Navbar>
+    Culinary Portfolio Builder 
+    </Navbar>
     <div className="auth-container">
       <div className="auth-box">
         {/* Register Form */}
@@ -120,6 +124,7 @@ const AuthPage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
