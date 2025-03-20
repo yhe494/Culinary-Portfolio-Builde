@@ -16,10 +16,10 @@ module.exports = function (app) {
         .delete(users.requiresLogin, users.delete);
 
     // Authentication routes
-    app.post('/login', users.authenticate);
+    app.post('/signin', users.authenticate); // Changed from /login to /signin
     app.post('/logout', users.signout);
     app.get('/check-auth', users.isSignedIn);
 
     // Set up route parameter middleware
     app.param('userId', users.userByID);
-}; 
+};

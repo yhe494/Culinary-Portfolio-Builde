@@ -5,7 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import './SignIn.css';
 
 const SignIn = () => {
-  const [studentNumber, setStudentNumber] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const SignIn = () => {
           'Content-Type': 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify({ studentNumber, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
@@ -36,7 +36,7 @@ const SignIn = () => {
         localStorage.setItem('token', data.token);
 
         setUser({
-          studentNumber: data.user.email,
+          email: data.user.email,
           isAdmin: data.user.isAdmin
         });
 
@@ -64,9 +64,9 @@ const SignIn = () => {
           <Form.Group controlId="formStudentNumber" className="form-group">
             <Form.Control
               type="text"
-              placeholder="Student Number"
-              value={studentNumber}
-              onChange={(e) => setStudentNumber(e.target.value)}
+              placeholder="Student email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
               className="form-control"
             />
