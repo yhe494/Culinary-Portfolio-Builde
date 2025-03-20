@@ -1,5 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -8,54 +10,42 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await fetch('http://localhost:5001/read_cookie', {
-          credentials: 'include',
-        });
-        const data = await response.json();
-        
-        if (response.ok && data.user) {
-          setUser(data.user);
-          // If user is admin, stay on admin page, otherwise redirect to student page
-          if (data.user.isAdmin && window.location.pathname === '/admin') {
+    const checkAuth = () => {
+      const token = localStorage.getItem('token'); // Check for stored token
+
+      if (token) {
+        try {
+          const decodedUser = jwtDecode(token); // Decode user info from token
+          setUser(decodedUser);
+         console.log("This is decodedUser" +decodedUser);
+          // Redirect based on role
+          if (decodedUser.isAdmin && window.location.pathname === '/admin') {
             // Stay on admin page
-          } else if (data.user.isAdmin) {
+          } else if (decodedUser.isAdmin) {
             navigate('/admin');
           } else {
             navigate('/student');
           }
-        } else {
+        } catch (error) {
+          console.error('Invalid token:', error);
+          localStorage.removeItem('token');
           setUser(null);
           navigate('/');
         }
-      } catch (error) {
-        console.error('Error checking authentication:', error);
+      } else {
         setUser(null);
         navigate('/');
-      } finally {
-        setLoading(false);
       }
+      setLoading(false);
     };
 
     checkAuth();
   }, [navigate]);
 
-  const signOut = async () => {
-    try {
-      const response = await fetch('http://localhost:5001/signout', {
-        method: 'POST',
-        credentials: 'include',
-      });
-      if (response.ok) {
-        setUser(null);
-        navigate('/');
-      } else {
-        console.error('Sign-out failed');
-      }
-    } catch (error) {
-      console.error('Error during sign-out:', error);
-    }
+  const signOut = () => {
+    localStorage.removeItem('token'); // Clear token
+    setUser(null);
+    navigate('/');
   };
 
   if (loading) {
@@ -67,5 +57,4 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
-  
 };

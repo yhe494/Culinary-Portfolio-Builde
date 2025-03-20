@@ -29,19 +29,19 @@ const SignIn = () => {
       console.log('Sign-in response:', data); // Debug log
 
       if (response.ok) {
-        if (!data.student) {
+        if (!data.user) {
           throw new Error('No student data received');
         }
 
         localStorage.setItem('token', data.token);
 
         setUser({
-          studentNumber: data.student.studentNumber,
-          isAdmin: data.student.isAdmin
+          studentNumber: data.user.email,
+          isAdmin: data.user.isAdmin
         });
 
         // Navigate based on user role
-        if (data.student.isAdmin) {
+        if (data.user.isAdmin) {
           navigate('/admin');
         } else {
           navigate('/student');
