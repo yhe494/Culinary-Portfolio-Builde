@@ -1,0 +1,5 @@
+module.exports = {
+    db: 'mongodb://localhost/CulirinaryPortofolio-db',
+    sessionSecret: 'developmentSessionSecret',
+    secretKey: 'real_secret'
+}; 
