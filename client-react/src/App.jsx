@@ -1,9 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignIn from './pages/SignIn';
+
+import AdminPanel from './pages/AdminPanel';
 import AdminTemplateCreate from './pages/AdminTemplateCreate';
 import AdminTemplateList from './pages/AdminTemplateList';
-import AdminPanel from './pages/AdminPanel';
+
+import CreatorPostingCreate from './pages/CreatorPostingCreate';
+import CreatorPostingList from './pages/CreatorPostingList';
+
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -12,7 +17,10 @@ const App = () => {
     <Router>
       <AuthProvider>
         <Routes>
+          {/* Public */}
           <Route path="/" element={<SignIn />} />
+
+          {/* Admin Routes */}
           <Route
             path="/admin"
             element={
@@ -21,7 +29,6 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-         
           <Route
             path="/admin/create"
             element={
@@ -30,8 +37,6 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-          
-          {/* Template List - Amin only */}
           <Route
             path="/admin/templates"
             element={
@@ -40,15 +45,25 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-          {/* <Route
-            path="/student"
+
+          {/* Creator Routes */}
+          <Route
+            path="/creator/create"
             element={
               <ProtectedRoute>
-                <StudentPage />
+                <CreatorPostingCreate />
               </ProtectedRoute>
             }
-          />*/}
-        </Routes> 
+          />
+          <Route
+            path="/creator/list"
+            element={
+              <ProtectedRoute>
+                <CreatorPostingList />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
       </AuthProvider>
     </Router>
   );

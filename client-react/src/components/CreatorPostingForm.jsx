@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const CATEGORIES = ['Appetizer', 'Main Course', 'Dessert', 'Beverage', 'Other'];
 
-export default function AdminTemplateForm({ onSubmit }) {
+export default function CreatorPostingForm({ onSubmit }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [categories, setCategories] = useState([]);
@@ -10,7 +10,6 @@ export default function AdminTemplateForm({ onSubmit }) {
   const [ingredients, setIngredients] = useState([]);
   const [steps, setSteps] = useState([]);
   const [isPublic, setIsPublic] = useState(true);
-  const [isReusable, setIsReusable] = useState(true);
 
   const addIngredient = () => {
     setIngredients([...ingredients, { name: "", quantity: "", unit: "" }]);
@@ -22,7 +21,7 @@ export default function AdminTemplateForm({ onSubmit }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const template = {
+    const posting = {
       title,
       description,
       categories,
@@ -30,14 +29,13 @@ export default function AdminTemplateForm({ onSubmit }) {
       ingredients,
       steps,
       isPublic,
-      isReusable,
     };
-    onSubmit(template);
+    onSubmit(posting);
   };
 
   return (
     <form onSubmit={handleSubmit} className="mt-4">
-      <h4>📝 Template Info</h4>
+      <h4>📝 Create New Posting</h4>
       <input
         className="form-control my-2"
         placeholder="Title"
@@ -82,15 +80,6 @@ export default function AdminTemplateForm({ onSubmit }) {
           onChange={() => setIsPublic(!isPublic)}
         />
         <label className="form-check-label">Public</label>
-      </div>
-      <div className="form-check mb-3">
-        <input
-          className="form-check-input"
-          type="checkbox"
-          checked={isReusable}
-          onChange={() => setIsReusable(!isReusable)}
-        />
-        <label className="form-check-label">Reusable</label>
       </div>
 
       <h5>🥬 Ingredients</h5>
@@ -188,7 +177,7 @@ export default function AdminTemplateForm({ onSubmit }) {
       </button>
 
       <button type="submit" className="btn btn-success">
-        ✅ Save Template
+        ✅ Save Posting
       </button>
     </form>
   );

@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -14,22 +15,23 @@ export const AuthProvider = ({ children }) => {
           credentials: 'include',
         });
         const data = await response.json();
-        
+
         if (response.ok && data.user) {
           setUser(data.user);
 
           const isAdmin = data.user.isAdmin;
           const currentPath = window.location.pathname;
 
-          // Condition updated
           if (isAdmin && currentPath.startsWith("/admin")) {
-            // stay on /admin or subpaths
+            // stay on admin subpaths
           } else if (isAdmin) {
             navigate("/admin");
-          } else if (currentPath.startsWith("/student")) {
-            // stay on /student or subpaths
+          } 
+          // ❌ Removed student handling
+          else if (currentPath.startsWith("/creator")) {
+            // stay on creator subpaths
           } else {
-            navigate("/student");
+            navigate("/creator/list"); // ✅ Default route for creators
           }
 
         } else {
@@ -66,7 +68,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Or your loading component
+    return <div>Loading...</div>;
   }
 
   return (
@@ -74,5 +76,4 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
-  
 };
