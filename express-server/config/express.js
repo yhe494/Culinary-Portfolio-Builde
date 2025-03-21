@@ -61,6 +61,8 @@ module.exports = function () {
     // Routes
     require('../app/routes/index.server.routes.js')(app);
     require('../app/routes/users.server.routes.js')(app);
+    require('../app/routes/templates.server.routes.js')(app);
+
 
     // Static files
     app.use(express.static('./public'));

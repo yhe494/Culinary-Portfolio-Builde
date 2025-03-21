@@ -17,14 +17,21 @@ export const AuthProvider = ({ children }) => {
         
         if (response.ok && data.user) {
           setUser(data.user);
-          // If user is admin, stay on admin page, otherwise redirect to student page
-          if (data.user.isAdmin && window.location.pathname === '/admin') {
-            // Stay on admin page
-          } else if (data.user.isAdmin) {
-            navigate('/admin');
+
+          const isAdmin = data.user.isAdmin;
+          const currentPath = window.location.pathname;
+
+          // Condition updated
+          if (isAdmin && currentPath.startsWith("/admin")) {
+            // stay on /admin or subpaths
+          } else if (isAdmin) {
+            navigate("/admin");
+          } else if (currentPath.startsWith("/student")) {
+            // stay on /student or subpaths
           } else {
-            navigate('/student');
+            navigate("/student");
           }
+
         } else {
           setUser(null);
           navigate('/');
