@@ -1,4 +1,8 @@
-const Template = require("../models/template.model"); // Import Mongoose Model
+//const Template = require("../models/template.server.model"); // Import Mongoose Model
+
+const mongoose = require("mongoose");
+require("../models/template.server.model");
+const Template = mongoose.model("RecipeTemplate"); 
 const jwt = require("jsonwebtoken");
 const config = require("../../config/config");
 const jwtExpirySeconds = 14400; // 4 hours
@@ -26,16 +30,22 @@ const getErrorMessage = (err) => {
 
 // Create a new template
 exports.create = async (req, res, next) => {
-  const template = new Template(req.body);
-  console.log("Creating template with data: ", req.body);
+  const templateData = {
+    ...req.body,
+    createdBy: req.user.id, //log-in ID
+  };
+
+  console.log("Creating template with data: ", templateData);
 
   try {
+    const template = new Template(templateData);
     await template.save();
     console.log("Template created successfully: ", template);
-    res.json(template);
+    res.status(201).json(template);
   } catch (err) {
-    console.error(getErrorMessage(err));
-    return next(err);
+    const message = getErrorMessage(err);
+    console.error("Template creation error:", message);
+    res.status(500).json({ message });
   }
 };
 

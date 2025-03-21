@@ -1,8 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignIn from './pages/SignIn';
-import AdminPage from './pages/AdminPage';
-import StudentPage from './pages/StudentPage';
+import AdminTemplateCreate from './pages/AdminTemplateCreate';
+import AdminTemplateList from './pages/AdminTemplateList';
+import AdminPanel from './pages/AdminPanel';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -16,19 +17,38 @@ const App = () => {
             path="/admin"
             element={
               <ProtectedRoute adminOnly={true}>
-                <AdminPage />
+                <AdminPanel />
               </ProtectedRoute>
             }
           />
+         
           <Route
+            path="/admin/create"
+            element={
+              <ProtectedRoute adminOnly={true}>
+                <AdminTemplateCreate />
+              </ProtectedRoute>
+            }
+          />
+          
+          {/* Template List - Amin only */}
+          <Route
+            path="/admin/templates"
+            element={
+              <ProtectedRoute adminOnly={true}>
+                <AdminTemplateList />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route
             path="/student"
             element={
               <ProtectedRoute>
                 <StudentPage />
               </ProtectedRoute>
             }
-          />
-        </Routes>
+          />*/}
+        </Routes> 
       </AuthProvider>
     </Router>
   );
