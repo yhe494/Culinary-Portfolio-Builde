@@ -23,7 +23,7 @@ const StudentNavbar = ({ signOut }) => {
           onClick={handleDashboardClick}
           style={{ cursor: 'pointer' }}
         >
-          Student Portal
+          Culinary Portfolio Builder
         </Navbar.Brand>
         <Nav>
           <Nav.Link 
@@ -31,7 +31,7 @@ const StudentNavbar = ({ signOut }) => {
             className="nav-link"
             style={{ cursor: 'pointer' }}
           >
-            Profile
+           Portfolio Creation
           </Nav.Link>
           <Nav.Link 
             onClick={signOut} 

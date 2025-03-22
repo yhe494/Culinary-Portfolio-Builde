@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -11,13 +12,15 @@ export const AuthProvider = ({ children }) => {
     const checkAuth = async () => {
       try {
         const response = await fetch('http://localhost:5001/read_cookie', {
-          credentials: 'include',
+          credentials: 'include', // Ensure cookies are included in the request
         });
         const data = await response.json();
         
         if (response.ok && data.user) {
+          // Store the user object with token in the state
           setUser(data.user);
-          // If user is admin, stay on admin page, otherwise redirect to student page
+
+          // If user is admin, redirect appropriately
           if (data.user.isAdmin && window.location.pathname === '/admin') {
             // Stay on admin page
           } else if (data.user.isAdmin) {
@@ -67,5 +70,4 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
-  
 };

@@ -110,7 +110,7 @@ const StudentPage = () => {
   }, [selectedFunction, fetchCourses, fetchStudentCourses]);
 
   return (
-    <div>
+    <div className="student-page">
       <StudentNavbar signOut={signOut} />
       <div className="main-container">
         <Container fluid>
@@ -119,7 +119,9 @@ const StudentPage = () => {
               <StudentSidebar handleNavClick={handleNavClick} />
             </Col>
             <Col md={10} className="dashboard">
-              <h2 className='dashboard-title'>{selectedFunction}</h2>
+              {selectedFunction !== 'Profile' && (
+                <h2 className='dashboard-title'>{selectedFunction}</h2>
+              )}
               {selectedFunction === 'Profile' && studentProfile && (
                 <StudentProfile studentProfile={studentProfile} />
               )}

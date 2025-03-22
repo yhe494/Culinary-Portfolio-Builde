@@ -1,0 +1,46 @@
+.portfolio-container {
+    background-color: #1a1a2e; /* Dark navy blue background */
+    color: #ffffff; /* White text */
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .portfolio-container h2 {
+    color: #e94560; /* Light red for titles */
+  }
+  
+  .portfolio-container .chef-logo {
+    width: 100px; /* Adjust the size as needed */
+    height: auto;
+    margin-bottom: 20px;
+  }
+  
+  .portfolio-container .btn-primary {
+    background-color: #0f3460; /* Dark navy blue for primary button */
+    border-color: #0f3460;
+  }
+  
+  .portfolio-container .btn-primary:hover {
+    background-color: #16213e; /* Darker navy blue on hover */
+    border-color: #16213e;
+  }
+  
+  .portfolio-container .btn-secondary {
+    background-color: #1a1a2e; /* Dark navy blue for secondary button */
+    border-color: #1a1a2e;
+  }
+  
+  .portfolio-container .btn-secondary:hover {
+    background-color: #0f3460; /* Darker navy blue on hover */
+    border-color: #0f3460;
+  }
+  
+  .portfolio-container .btn-danger {
+    background-color: #e94560; /* Light red for danger button */
+    border-color: #e94560;
+  }
+  
+  .portfolio-container .btn-danger:hover {
+    background-color: #ff6f61; /* Lighter red on hover */
+    border-color: #ff6f61;
+  }

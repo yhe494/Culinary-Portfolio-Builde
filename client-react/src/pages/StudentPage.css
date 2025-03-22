@@ -1,40 +1,63 @@
+.student-page {
+  background-color: #fcfcfe; /* Dark navy blue background */
+  color: #ffffff; /* White text */
+  min-height: 100vh;
+}
+
 .main-container {
-  display: flex;
-  height: 100vh;
+  padding: 20px;
 }
 
 .sidebar {
-  background-color: #f8f9fa;
+  background-color: #ffffff; /* Darker navy blue for sidebar */
+  color: #ffffff;
+  min-height: 100vh;
   padding: 20px;
-  border-right: 1px solid #dee2e6;
+}
+.portfolio-container .chef-logo {
+  width: 100px; /* Adjust the size as needed */
+  height: auto;
+  margin-bottom: 20px;
 }
 
 .dashboard {
+  background-color: #0f3460; /* Dark navy blue for dashboard */
+  color: #ffffff;
   padding: 20px;
-  overflow-y: auto;
+  border-radius: 8px;
 }
 
-.navbar {
-  background-color: #296566;
+.dashboard-title {
+  color: #e94560; /* Light red for titles */
+  margin-bottom: 20px;
 }
 
-.navbar-brand {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #ffffff;
+.btn-primary {
+  background-color: #b9bfce; /* Dark navy blue for primary button */
+  border-color: #b9bfce;
 }
 
-.navbar-brand:hover {
-  color: #dcdcdc;
+.btn-primary:hover {
+  background-color: #b9bfce; /* Darker navy blue on hover */
+  border-color: #b9bfce;
 }
 
-.nav-link {
-  color: #ffffff;
+.btn-secondary {
+  background-color: #f9f9f9; /* Dark navy blue for secondary button */
+  border-color: #f6f6f8;
 }
 
-.nav-link:hover {
-  color: #dcdcdc;
+.btn-secondary:hover {
+  background-color: #f7f8fa; /* Darker navy blue on hover */
+  border-color: #fafafa;
 }
-.dashboard-title{
-    margin-bottom: 20px;
+
+.btn-danger {
+  background-color: #e94560; /* Light red for danger button */
+  border-color: #e94560;
+}
+
+.btn-danger:hover {
+  background-color: #ff6f61; /* Lighter red on hover */
+  border-color: #ff6f61;
 }
