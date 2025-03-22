@@ -12,39 +12,41 @@ const StudentProfile = () => {
   const [website, setWebsite] = useState('');
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(true); // Start in editing mode
   const [loading, setLoading] = useState(false); // Loading state for API calls
+  const [profileLoaded, setProfileLoaded] = useState(false);
 
   useEffect(() => {
-    if (user && user.id) { // Ensure 'user' and 'user.id' are available before proceeding
+    console.log('StudentProfile user context:', user);
+    
+    if (user && (user.id || user._id)) { // Check for either id or _id
       const fetchUserData = async () => {
-        try {
-          const userData = await getUserData();
-          setFirstName(userData.firstName);
-          setLastName(userData.lastName);
-          setBio(userData.bio);
-          setWebsite(userData.website);
-        } catch (error) {
-          console.error('Error fetching user data:', error);
-          setError('Error fetching user data');
-        }
+        // ... rest of your code
       };
-  
+      
       fetchUserData();
+    } else {
+      console.log('Missing user data:', user);
+      setError('User authentication failed. Please log in again.');
     }
   }, [user]);
   
-
   const getUserData = async () => {
     if (!user || !user.token) {
-      setError('User authentication failed. Please log in again.');
-      return;
+      console.log('Missing user or token in getUserData:', user);
+      throw new Error('User authentication failed. Please log in again.');
     }
-
+  
+    const userId = user.id || user._id;
+    if (!userId) {
+      console.log('Missing user ID in getUserData:', user);
+      throw new Error('User authentication failed. Please log in again.');
+    }
+  
     try {
-      const response = await axios.get(`http://localhost:5001/users/${user.id}`, {
+      const response = await axios.get(`http://localhost:5001/users/${userId}`, {
         headers: {
-          Authorization: `Bearer ${user.token}`,  // Include JWT token
+          Authorization: `Bearer ${user.token}`,
         },
       });
       return response.data;
@@ -53,17 +55,17 @@ const StudentProfile = () => {
       throw error;
     }
   };
-
+  
   const savePortfolio = async (data) => {
     if (!user || !user.token) {
-      setError('User authentication failed. Please log in again.');
-      return;
+      console.log('Missing user or token in savePortfolio:', user);
+      throw new Error('User authentication failed. Please log in again.');
     }
-
+  
     try {
       const response = await axios.put(`http://localhost:5001/users/${user.id}`, data, {
         headers: {
-          Authorization: `Bearer ${user.token}`,  // Include JWT token
+          Authorization: `Bearer ${user.token}`,
         },
       });
       return response.data;
@@ -76,6 +78,12 @@ const StudentProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!isEditing) {
+      // If not in edit mode, switch to edit mode
+      setIsEditing(true);
+      return;
+    }
+
     if (!user || !user.token) {
       setError('User authentication failed. Please log in again.');
       return;
@@ -83,34 +91,37 @@ const StudentProfile = () => {
 
     const portfolioData = { firstName, lastName, bio, website };
 
-    setLoading(true); // Set loading true during save operation
+    setLoading(true);
     try {
       await savePortfolio(portfolioData);
-      console.log('Portfolio Created:', portfolioData);
+      console.log('Portfolio saved:', portfolioData);
       setSuccess(true);
       setError('');
       setIsEditing(false);
     } catch (error) {
-      console.error('Error creating portfolio:', error.response?.data || error.message);
+      console.error('Error saving portfolio:', error.response?.data || error.message);
       setSuccess(false);
       setError('Failed to save portfolio. Please try again.');
     } finally {
-      setLoading(false); // Set loading false after operation completes
+      setLoading(false);
     }
   };
 
-  const handleEdit = () => {
-    setIsEditing(true);
-    setSuccess(false);
-  };
-
-  const handleDelete = () => {
-    setFirstName('');
-    setLastName('');
-    setBio('');
-    setWebsite('');
-    setSuccess(false);
+  const handleCancelEdit = () => {
+    // Revert to view mode without saving
     setIsEditing(false);
+    // Reset form data to last saved values
+    if (profileLoaded) {
+      getUserData().then(userData => {
+        setFirstName(userData.firstName || '');
+        setLastName(userData.lastName || '');
+        setBio(userData.bio || '');
+        setWebsite(userData.website || '');
+      }).catch(err => {
+        console.error('Error fetching user data:', err);
+        setError('Error fetching user data');
+      });
+    }
   };
 
   return (
@@ -119,10 +130,12 @@ const StudentProfile = () => {
         <Col md={8}>
           <h2 className="text-center my-4">
             <img src={chefImage} alt="Chef" style={{ width: '50px', marginRight: '10px' }} />
-            Create a Culinary Portfolio
+            {isEditing ? 'Edit Your Culinary Portfolio' : 'Your Culinary Portfolio'}
           </h2>
-          {success && <Alert variant="success">Portfolio created successfully!</Alert>}
+          {success && <Alert variant="success">Portfolio saved successfully!</Alert>}
           {error && <Alert variant="danger">{error}</Alert>}
+          {loading && <Alert variant="info">Loading...</Alert>}
+          
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formFirstName" className="mb-3">
               <Form.Label>First Name</Form.Label>
@@ -132,7 +145,7 @@ const StudentProfile = () => {
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Enter your first name"
                 required
-                disabled={success && !isEditing}
+                disabled={!isEditing}
               />
             </Form.Group>
             <Form.Group controlId="formLastName" className="mb-3">
@@ -143,7 +156,7 @@ const StudentProfile = () => {
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Enter your last name"
                 required
-                disabled={success && !isEditing}
+                disabled={!isEditing}
               />
             </Form.Group>
             <Form.Group controlId="formBio" className="mb-3">
@@ -155,7 +168,7 @@ const StudentProfile = () => {
                 onChange={(e) => setBio(e.target.value)}
                 placeholder="Tell us about yourself"
                 required
-                disabled={success && !isEditing}
+                disabled={!isEditing}
               />
             </Form.Group>
             <Form.Group controlId="formWebsite" className="mb-3">
@@ -166,18 +179,32 @@ const StudentProfile = () => {
                 onChange={(e) => setWebsite(e.target.value)}
                 placeholder="Enter your website link"
                 required
-                disabled={success && !isEditing}
+                disabled={!isEditing}
               />
             </Form.Group>
-            <Button variant="primary" type="submit" className="w-100" disabled={loading || (success && !isEditing)}>
-              {isEditing ? 'Save Changes' : 'Edit Portfolio'}
-            </Button>
+            
+            <div className="d-flex justify-content-between">
+              <Button 
+                variant="primary" 
+                type="submit" 
+                className="w-100 me-2" 
+                disabled={loading}
+              >
+                {isEditing ? 'Save Changes' : 'Edit Portfolio'}
+              </Button>
+              
+              {isEditing && (
+                <Button 
+                  variant="secondary" 
+                  className="w-100 ms-2" 
+                  onClick={handleCancelEdit}
+                  disabled={loading}
+                >
+                  Cancel
+                </Button>
+              )}
+            </div>
           </Form>
-          {success && !isEditing && (
-            <>
-              {/* Optional section: You can add any success message or details you want to show after saving */}
-            </>
-          )}
         </Col>
       </Row>
     </Container>

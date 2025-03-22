@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, Alert, Row, Col } from 'react-bootstrap';
+import { Form, Button, Alert } from 'react-bootstrap';
 import { AuthContext } from '../context/AuthContext';
 import "./Signin.css"
 import chefIcon from "../assets/chef.png"
@@ -35,13 +35,24 @@ const AuthPage = () => {
 
       const data = await response.json();
 
-      if (response.ok) {
-        localStorage.setItem('token', data.token);
-        setUser({ email: data.user.email, isAdmin: data.user.isAdmin });
-        navigate(data.user.isAdmin ? '/admin' : '/student');
-      } else {
-        setError(data.message || 'Sign-in failed');
-      }
+      // Inside the handleSignIn function in SignIn.jsx
+if (response.ok) {
+  const token = data.token;
+  localStorage.setItem('token', token);
+  
+  // Make sure we have an id property in the user object
+  const userData = {
+    ...data.user,
+    id: data.user.id || data.user._id, // Handle possible naming differences
+    token: token
+  };
+  
+  console.log('Sign in user data:', userData);
+  setUser(userData);
+  navigate(data.user.isAdmin ? '/admin' : '/student');
+} else {
+  setError(data.message || 'Sign-in failed');
+}
     } catch (error) {
       setError('An error occurred during sign-in. Please try again.');
     }
