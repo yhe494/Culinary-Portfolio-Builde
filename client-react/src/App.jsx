@@ -5,7 +5,7 @@ import SignIn from './pages/SignIn';
 import AdminPanel from './pages/AdminPanel';
 import AdminTemplateCreate from './pages/AdminTemplateCreate';
 import AdminTemplateList from './pages/AdminTemplateList';
-
+import AppNavbar from './components/Navbar';
 import CreatorPostingCreate from './pages/CreatorPostingCreate';
 import CreatorPostingList from './pages/CreatorPostingList';
 
@@ -16,6 +16,7 @@ const App = () => {
   return (
     <Router>
       <AuthProvider>
+      <AppNavbar />
         <Routes>
           {/* Public */}
           <Route path="/" element={<SignIn />} />
