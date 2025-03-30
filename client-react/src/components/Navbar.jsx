@@ -1,42 +1,60 @@
-import React from 'react';
-import { Navbar, Nav, Container } from 'react-bootstrap';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
+import { Navbar, Nav, Container, Button, Stack } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
-const AdminNavbar = ({ signOut }) => {
+const AppNavbar = () => {
   const navigate = useNavigate();
+  const { user, setUser } = useContext(AuthContext);
 
-  const handleDashboardClick = () => {
-    navigate('/admin'); 
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/signout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        setUser(null);
+        localStorage.removeItem('token');
+        navigate('/');
+      }
+    } catch (err) {
+      console.error('Logout error:', err);
+    }
   };
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg" className="navbar">
-      <Container className="d-flex justify-content-between">
+    <Navbar bg="dark" variant="dark" expand="lg" className="shadow-sm">
+      <Container>
         <Navbar.Brand
-          href="#home"
-          className="navbar-brand"
-          onClick={handleDashboardClick}
-          style={{ cursor: 'pointer' }}
+          onClick={() => navigate('/')}
+          style={{ cursor: 'pointer', fontWeight: 'bold', fontSize: '24px' }}
         >
-          Admin Dashboard
+          Culinary Portfolio
         </Navbar.Brand>
-        <Nav>
-          <Nav.Link 
-            onClick={signOut} 
-            className="nav-link"
-            style={{ cursor: 'pointer' }}
-          >
-            Sign Out
-          </Nav.Link>
-        </Nav>
+        <Navbar.Toggle aria-controls="main-navbar" />
+        <Navbar.Collapse id="main-navbar">
+          <Nav className="me-auto">
+            <Nav.Link onClick={() => navigate('/portfolio')}>Portfolio</Nav.Link>
+            <Nav.Link onClick={() => navigate('/recipes')}>Recipes</Nav.Link>
+            <Nav.Link onClick={() => navigate('/community')}>Community</Nav.Link>
+          </Nav>
+
+          {user && (
+            <Stack direction="horizontal" gap={2}>
+              <Button variant="outline-light" onClick={() => navigate('/profile')}>
+                My Profile
+              </Button>
+              <Button variant="outline-warning" onClick={handleLogout}>
+                Logout
+              </Button>
+            </Stack>
+          )}
+        </Navbar.Collapse>
       </Container>
     </Navbar>
   );
 };
 
-AdminNavbar.propTypes = {
-  signOut: PropTypes.func.isRequired,
-};
-
-export default AdminNavbar;
+export default AppNavbar;
