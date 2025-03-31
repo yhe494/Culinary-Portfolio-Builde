@@ -110,6 +110,24 @@ exports.delete = async (req, res, next) => {
   }
 };
 
+//Get templates by userID and sort by date created
+exports.getTemplatesByUserID = async (req, res, next) => {
+  try {
+    // Convert string ID to MongoDB ObjectId
+    console.log("User ID:", req.params.userId);
+    const userId = mongoose.Types.ObjectId.createFromHexString(req.params.userId);
+    const templates = await Template.find({ createdBy: userId }).sort({ createdAt: -1 });
+    res.json(templates);
+  } catch (err) {
+    // Handle invalid ObjectId format error specifically
+    if (err.name === 'CastError') {
+      return res.status(400).json({ message: 'Invalid user ID format' });
+    }
+    return next(err);
+  }
+};
+
+
 // Middleware to check if the user is logged in
 exports.requiresLogin = (req, res, next) => {
   const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
