@@ -21,7 +21,7 @@ const RecipeTemplateSchema = new Schema({
         type: String,  // URL or path to the image
         required: false
     },
-    ingredients: {        
+    ingredients: {
         type: Schema.Types.Mixed,  // Using Mixed to simulate List behavior in MongoDB
         required: true
     },
@@ -57,7 +57,55 @@ const RecipeTemplateSchema = new Schema({
     isReusable: {
         type: Boolean,
         default: true  // Control whether this template can be reused by others
-    }
+    },
+
+    //for like buttom
+    likedBy: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+
+    //for comments
+    comments: [{
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: 'Comment user is required'
+        },
+        content: {
+            type: String,
+            required: 'Comment content cannot be empty',
+            trim: true
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now
+        },
+        updatedAt: {
+            type: Date,
+            default: Date.now
+        },
+        replies: [{
+            user: {
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+                required: 'Reply user is required'
+            },
+            content: {
+                type: String,
+                required: 'Reply content cannot be empty',
+                trim: true
+            },
+            createdAt: {
+                type: Date,
+                default: Date.now
+            },
+            updatedAt: {
+                type: Date,
+                default: Date.now
+            }
+        }]
+    }]
 }, { timestamps: true });
 
 mongoose.model('RecipeTemplate', RecipeTemplateSchema);
