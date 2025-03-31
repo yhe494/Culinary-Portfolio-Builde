@@ -152,6 +152,7 @@ exports.authenticate = async function (req, res, next) {
             success: true,
             token: token,
             user: {
+                id: user._id,
                 email: user.email,
                 isAdmin: user.isAdmin,
                 firstName: user.firstName,
