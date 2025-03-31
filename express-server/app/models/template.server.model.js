@@ -59,7 +59,8 @@ const RecipeTemplateSchema = new Schema({
         default: true  // Control whether this template can be reused by others
     },
 
-    //for like buttom
+
+    //for like button
     likedBy: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -150,5 +151,40 @@ const RecipeTemplateSchema = new Schema({
     },
 
 }, { timestamps: true });
+
+// Create a compound index to ensure a user can only rate a recipe once
+RecipeTemplateSchema.index({
+    _id: 1,
+    'ratings.user': 1
+}, {
+    unique: true,
+    partialFilterExpression: { 'ratings.user': { $exists: true } }
+});
+
+// Create an index for efficient lookup of who liked a recipe
+RecipeTemplateSchema.index({ 'likedBy': 1 });
+
+// Middleware to update averageRating and likesCount 
+RecipeTemplateSchema.pre('save', function (next) {
+    // Update ratings average and count
+    if (this.ratings && this.ratings.length > 0) {
+        const totalScore = this.ratings.reduce((sum, rating) => sum + rating.score, 0);
+        this.averageRating = Number((totalScore / this.ratings.length).toFixed(1)); // Round to 1 decimal place
+        this.ratingCount = this.ratings.length;
+    } else {
+        this.averageRating = 0;
+        this.ratingCount = 0;
+    }
+
+    // Update likes count
+    if (this.likedBy) {
+        this.likesCount = this.likedBy.length;
+    } else {
+        this.likesCount = 0;
+    }
+
+    next();
+});
+
 
 mongoose.model('RecipeTemplate', RecipeTemplateSchema);
