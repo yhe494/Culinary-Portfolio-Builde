@@ -104,8 +104,51 @@ const RecipeTemplateSchema = new Schema({
                 type: Date,
                 default: Date.now
             }
-        }]
-    }]
+        }],
+
+    }],
+    //for ratings
+    ratings: [{
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
+        score: {
+            type: Number,
+            required: true,
+            min: 1,
+            max: 5  // Typical 5-star rating system
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now
+        },
+        updatedAt: {
+            type: Date,
+            default: Date.now
+        },
+    }],
+    // Add calculated average rating for quick access
+    averageRating: {
+        type: Number,
+        default: 0,
+        min: 0,
+        max: 5
+    },
+    ratingCount: {
+        type: Number,
+        default: 0,
+        min: 0
+    },
+
+    // Add calculated likes count for quick access
+    likesCount: {
+        type: Number,
+        default: 0,
+        min: 0
+    },
+
 }, { timestamps: true });
 
 mongoose.model('RecipeTemplate', RecipeTemplateSchema);
