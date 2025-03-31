@@ -49,10 +49,10 @@ exports.create = async (req, res, next) => {
   }
 };
 
-// Return all templates
+// Return all templates sorted by date created
 exports.list = async (req, res, next) => {
   try {
-    const templates = await Template.find({});
+    const templates = await Template.find({}).sort({ createdAt: -1 });
     res.json(templates);
   } catch (err) {
     return next(err);
