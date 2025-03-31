@@ -3,13 +3,16 @@ const express = require("express");
 const router = express.Router();
 
 module.exports = function (app) {
-  // 🔓 GET: All logged-in users can fetch templates (creators + admins)
+  // 🔓 GET: All logged-in users can fetch templates (creators + admins), sorted by date created
   app.get(
     "/templates",
     templates.requiresLogin,
     //templates.requresAdmin //-has to be uncomment when working on templates (Admin side)
     templates.list
   );
+
+  // 🔓 Get templates by userID and sort by date created
+  app.get("/templates/user/:userId", templates.requiresLogin, templates.getTemplatesByUserID);
 
   // ✅ POST: Any logged-in user can create a template (temporary use for creators)
   app.post(
@@ -27,4 +30,5 @@ module.exports = function (app) {
 
   // Template ID parameter preloading
   app.param("templateId", templates.templateByID);
+
 };

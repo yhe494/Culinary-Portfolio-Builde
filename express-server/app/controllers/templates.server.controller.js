@@ -2,7 +2,7 @@
 
 const mongoose = require("mongoose");
 require("../models/template.server.model");
-const Template = mongoose.model("RecipeTemplate"); 
+const Template = mongoose.model("RecipeTemplate");
 const jwt = require("jsonwebtoken");
 const config = require("../../config/config");
 const jwtExpirySeconds = 14400; // 4 hours
