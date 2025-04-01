@@ -2,7 +2,7 @@
 
 const mongoose = require("mongoose");
 require("../models/template.server.model");
-const Template = mongoose.model("RecipeTemplate"); 
+const Template = mongoose.model("RecipeTemplate");
 const jwt = require("jsonwebtoken");
 const config = require("../../config/config");
 const jwtExpirySeconds = 14400; // 4 hours
@@ -49,10 +49,10 @@ exports.create = async (req, res, next) => {
   }
 };
 
-// Return all templates
+// Return all templates sorted by date created
 exports.list = async (req, res, next) => {
   try {
-    const templates = await Template.find({});
+    const templates = await Template.find({}).sort({ createdAt: -1 });
     res.json(templates);
   } catch (err) {
     return next(err);
@@ -109,6 +109,24 @@ exports.delete = async (req, res, next) => {
     return next(err);
   }
 };
+
+//Get templates by userID and sort by date created
+exports.getTemplatesByUserID = async (req, res, next) => {
+  try {
+    // Convert string ID to MongoDB ObjectId
+    console.log("User ID:", req.params.userId);
+    const userId = mongoose.Types.ObjectId.createFromHexString(req.params.userId);
+    const templates = await Template.find({ createdBy: userId }).sort({ createdAt: -1 });
+    res.json(templates);
+  } catch (err) {
+    // Handle invalid ObjectId format error specifically
+    if (err.name === 'CastError') {
+      return res.status(400).json({ message: 'Invalid user ID format' });
+    }
+    return next(err);
+  }
+};
+
 
 // Middleware to check if the user is logged in
 exports.requiresLogin = (req, res, next) => {
