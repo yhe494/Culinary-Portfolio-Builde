@@ -65,7 +65,6 @@ module.exports = function () {
     require('../app/routes/search.server.routes.js')(app);
 
 
-
     // Static files
     app.use(express.static('./public'));
 
