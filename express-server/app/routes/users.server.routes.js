@@ -1,4 +1,5 @@
 var users = require('../controllers/users.server.controller');
+var portfolio = require('../controllers/portfolio.server.controller.js'); // Import the portfolio controller
 var express = require('express');
 var router = express.Router();
 
@@ -20,6 +21,9 @@ module.exports = function (app) {
     app.post('/signout', users.signout);
     app.get('/read_cookie', users.isSignedIn);
 
+    // Portfolio route
+    app.post('/portfolio', users.requiresLogin, portfolio.updatePortfolio); // Add the portfolio update route
+
     // Set up route parameter middleware
     app.param('userId', users.userByID);
-}; 
+};

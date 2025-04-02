@@ -8,6 +8,8 @@ import AdminTemplateList from './pages/AdminTemplateList';
 import AppNavbar from './components/Navbar';
 import CreatorPostingCreate from './pages/CreatorPostingCreate';
 import CreatorPostingList from './pages/CreatorPostingList';
+import EditPortfolio from './components/EditPortfolio'; // Imported EditPortfolio component
+import ViewPortfolio from './components/ViewPortfolio'; // Imported ViewPortfolio component
 
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -16,7 +18,7 @@ const App = () => {
   return (
     <Router>
       <AuthProvider>
-      <AppNavbar />
+        <AppNavbar />
         <Routes>
           {/* Public */}
           <Route path="/" element={<SignIn />} />
@@ -64,6 +66,24 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+
+          {/* Edit Portfolio Route */}
+          <Route
+            path="/edit-portfolio"
+            element={
+              <ProtectedRoute>
+                <EditPortfolio />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route
+            path="/view-portfolio"
+            element={
+           <ProtectedRoute>
+            <ViewPortfolio />
+             </ProtectedRoute>
+         }
+        /> */}
         </Routes>
       </AuthProvider>
     </Router>
