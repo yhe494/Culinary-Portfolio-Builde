@@ -3,8 +3,4 @@ module.exports = function (app) {
   
     app.get("/search", searchPosts);
   };
-<<<<<<< HEAD
-  
-=======
->>>>>>> 8b9d4896c3a892e9d084a71e4676746148e08321
   
