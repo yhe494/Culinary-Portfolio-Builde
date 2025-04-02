@@ -41,11 +41,13 @@ const AppNavbar = () => {
             <Nav.Link onClick={() => navigate('/portfolio')}>Portfolio</Nav.Link>
             <Nav.Link onClick={() => navigate('/recipes')}>Recipes</Nav.Link>
             <Nav.Link onClick={() => navigate('/community')}>Community</Nav.Link>
+            {/* <Nav.Link onClick={() => navigate('/edit-portfolio')}>Edit Portfolio</Nav.Link> //edit portfolio page */}
+           
           </Nav>
 
           {user && (
             <Stack direction="horizontal" gap={2}>
-              <Button variant="outline-light" onClick={() => navigate('/profile')}>
+              <Button variant="outline-light" onClick={() => navigate('/edit-portfolio')}>
                 My Profile
               </Button>
               <Button variant="outline-warning" onClick={handleLogout}>
