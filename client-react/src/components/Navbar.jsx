@@ -9,11 +9,13 @@ const AppNavbar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('/signout', {
+      //this response using backend domain to send request to backend directly,
+      //check when the app needs to deploy, backend domain could be changed
+      const response = await fetch('http://localhost:5001/signout', {
         method: 'POST',
         credentials: 'include',
       });
-
+  
       if (response.ok) {
         setUser(null);
         localStorage.removeItem('token');
@@ -23,7 +25,7 @@ const AppNavbar = () => {
       console.error('Logout error:', err);
     }
   };
-
+  
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="shadow-sm">
       <Container>
