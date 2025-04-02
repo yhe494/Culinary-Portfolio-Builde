@@ -5,7 +5,6 @@ import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 
 export default function EditPortfolioForm({ onSubmit, initialData }) {
-
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState(user?.firstName || "");
@@ -50,22 +49,30 @@ export default function EditPortfolioForm({ onSubmit, initialData }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    // Prepare the updated portfolio data
     const updatedPortfolio = {
       firstName,
       lastName,
-      bio,
-      website,
+      profile: {
+        bios: bio,
+        website,
+      },
     };
-
+  
     try {
-      const response = await fetch("http://localhost:5001/portfolio", {
-        method: "POST", 
+      // Retrieve the token from localStorage or context
+      const token = localStorage.getItem("token"); // Adjust this based on how you store the token
+  
+      const response = await fetch(`http://localhost:5001/users/${user.id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
         },
         body: JSON.stringify(updatedPortfolio),
       });
-
+  
       if (response.ok) {
         alert("Portfolio updated successfully!");
       } else {
