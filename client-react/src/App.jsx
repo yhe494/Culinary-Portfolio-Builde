@@ -9,7 +9,7 @@ import AppNavbar from './components/Navbar';
 import CreatorPostingCreate from './pages/CreatorPostingCreate';
 import CreatorPostingList from './pages/CreatorPostingList';
 import EditPortfolio from './components/EditPortfolio'; // Imported EditPortfolio component
-import ViewPortfolio from './components/ViewPortfolio'; // Imported ViewPortfolio component
+// import ViewPortfolio from './components/ViewPortfolio'; // Imported ViewPortfolio component
 
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
