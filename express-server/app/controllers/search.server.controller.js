@@ -22,7 +22,10 @@ exports.searchPosts = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> 8b9d4896c3a892e9d084a71e4676746148e08321

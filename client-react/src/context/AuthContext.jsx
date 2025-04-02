@@ -22,16 +22,16 @@ export const AuthProvider = ({ children }) => {
           const isAdmin = data.user.isAdmin;
           const currentPath = window.location.pathname;
 
-          if (isAdmin && currentPath.startsWith("/admin")) {
-            // stay on admin subpaths
+          if (currentPath === '/edit-portfolio') {
+            // Allow navigation to edit portfolio
+          } else if (isAdmin && currentPath.startsWith("/admin")) {
+            // Admin logic
           } else if (isAdmin) {
             navigate("/admin");
-          } 
-          // ❌ Removed student handling
-          else if (currentPath.startsWith("/creator")) {
-            // stay on creator subpaths
+          } else if (currentPath.startsWith("/creator")) {
+            // Creator logic
           } else {
-            navigate("/creator/list"); // ✅ Default route for creators
+            navigate("/creator/list");
           }
 
         } else {
