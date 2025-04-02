@@ -6,6 +6,7 @@ import { AuthContext } from '../context/AuthContext';
 const AppNavbar = () => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(AuthContext);
+  console.log(localStorage.getItem('token')); 
 
   const handleLogout = async () => {
     try {
@@ -41,8 +42,6 @@ const AppNavbar = () => {
             <Nav.Link onClick={() => navigate('/portfolio')}>Portfolio</Nav.Link>
             <Nav.Link onClick={() => navigate('/recipes')}>Recipes</Nav.Link>
             <Nav.Link onClick={() => navigate('/community')}>Community</Nav.Link>
-            {/* <Nav.Link onClick={() => navigate('/edit-portfolio')}>Edit Portfolio</Nav.Link> //edit portfolio page */}
-           
           </Nav>
 
           {user && (
