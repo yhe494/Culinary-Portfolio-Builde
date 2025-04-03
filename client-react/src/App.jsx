@@ -10,7 +10,7 @@ import CreatorPostingCreate from './pages/CreatorPostingCreate';
 import CreatorPostingList from './pages/CreatorPostingList';
 import EditPortfolio from './components/EditPortfolio'; // Imported EditPortfolio component
 // import ViewPortfolio from './components/ViewPortfolio'; // Imported ViewPortfolio component
-
+import RecipeList from './components/RecipeList';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -84,7 +84,15 @@ const App = () => {
              </ProtectedRoute>
          }
         /> */}
-        </Routes>
+
+          <Route 
+            path="/recipes" 
+            element={
+              <ProtectedRoute>
+                <RecipeList />
+              </ProtectedRoute>
+          } />
+          </Routes>
       </AuthProvider>
     </Router>
   );
