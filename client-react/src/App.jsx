@@ -11,6 +11,7 @@ import CreatorPostingList from './pages/CreatorPostingList';
 import EditPortfolio from './components/EditPortfolio'; // Imported EditPortfolio component
 // import ViewPortfolio from './components/ViewPortfolio'; // Imported ViewPortfolio component
 import RecipeList from './components/RecipeList';
+import RecipeDetail from './components/RecipeDetail';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -85,6 +86,14 @@ const App = () => {
          }
         /> */}
 
+<Route
+            path="/recipes/:id"
+            element={
+              <ProtectedRoute>
+                <RecipeDetail />
+              </ProtectedRoute>
+            }
+          />
           <Route 
             path="/recipes" 
             element={
@@ -93,6 +102,8 @@ const App = () => {
               </ProtectedRoute>
           } />
           </Routes>
+
+          
       </AuthProvider>
     </Router>
   );
