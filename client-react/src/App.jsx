@@ -8,12 +8,16 @@ import AdminTemplateList from './pages/AdminTemplateList';
 import AppNavbar from './components/Navbar';
 import CreatorPostingCreate from './pages/CreatorPostingCreate';
 import CreatorPostingList from './pages/CreatorPostingList';
-import EditPortfolio from './components/EditPortfolio'; // Imported EditPortfolio component
-// import ViewPortfolio from './components/ViewPortfolio'; // Imported ViewPortfolio component
+import EditPortfolio from './components/EditPortfolio';
 import RecipeList from './components/RecipeList';
 import RecipeDetail from './components/RecipeDetail';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+
+// Newly added components for template selection and template-specific posting
+import TemplateSelector from './pages/TemplateSelector';
+import CreatorGeneralForm from './pages/CreatorGeneralForm';
+import CreatorImageTopForm from './pages/CreatorImageTopForm';
 
 const App = () => {
   return (
@@ -21,7 +25,7 @@ const App = () => {
       <AuthProvider>
         <AppNavbar />
         <Routes>
-          {/* Public */}
+          {/* Public Route */}
           <Route path="/" element={<SignIn />} />
 
           {/* Admin Routes */}
@@ -51,14 +55,38 @@ const App = () => {
           />
 
           {/* Creator Routes */}
+
+          {/* Template Selection (navigation page) */}
           <Route
             path="/creator/create"
             element={
               <ProtectedRoute>
-                <CreatorPostingCreate />
+                <TemplateSelector />
               </ProtectedRoute>
             }
           />
+
+          {/* Posting creation: General Template */}
+          <Route
+            path="/creator/create/general"
+            element={
+              <ProtectedRoute>
+                <CreatorGeneralForm />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Posting creation: Image Top Template */}
+          <Route
+            path="/creator/create/imagetop"
+            element={
+              <ProtectedRoute>
+                <CreatorImageTopForm />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Creator Postings List */}
           <Route
             path="/creator/list"
             element={
@@ -68,7 +96,17 @@ const App = () => {
             }
           />
 
-          {/* Edit Portfolio Route */}
+<Route
+  path="/creator/postings"
+  element={
+    <ProtectedRoute>
+      <CreatorPostingList />
+    </ProtectedRoute>
+  }
+/>
+
+
+          {/* Portfolio Editing */}
           <Route
             path="/edit-portfolio"
             element={
@@ -77,16 +115,9 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-          {/* <Route
-            path="/view-portfolio"
-            element={
-           <ProtectedRoute>
-            <ViewPortfolio />
-             </ProtectedRoute>
-         }
-        /> */}
 
-<Route
+          {/* Recipe Details */}
+          <Route
             path="/recipes/:id"
             element={
               <ProtectedRoute>
@@ -94,16 +125,17 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-          <Route 
-            path="/recipes" 
+
+          {/* All Recipes List */}
+          <Route
+            path="/recipes"
             element={
               <ProtectedRoute>
                 <RecipeList />
               </ProtectedRoute>
-          } />
-          </Routes>
-
-          
+            }
+          />
+        </Routes>
       </AuthProvider>
     </Router>
   );

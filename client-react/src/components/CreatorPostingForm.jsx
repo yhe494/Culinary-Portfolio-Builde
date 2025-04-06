@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const CATEGORIES = ['Appetizer', 'Main Course', 'Dessert', 'Beverage', 'Other'];
 
-export default function CreatorPostingForm({ onSubmit }) {
+export default function CreatorPostingForm({ templateType = "default", onSubmit }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [categories, setCategories] = useState([]);
@@ -10,6 +10,8 @@ export default function CreatorPostingForm({ onSubmit }) {
   const [ingredients, setIngredients] = useState([]);
   const [steps, setSteps] = useState([]);
   const [isPublic, setIsPublic] = useState(true);
+
+  const isImageTop = templateType === "imageTop";
 
   const addIngredient = () => {
     setIngredients([...ingredients, { name: "", quantity: "", unit: "" }]);
@@ -29,6 +31,7 @@ export default function CreatorPostingForm({ onSubmit }) {
       ingredients,
       steps,
       isPublic,
+      templateType  // 📌 ?
     };
     onSubmit(posting);
   };
@@ -36,6 +39,17 @@ export default function CreatorPostingForm({ onSubmit }) {
   return (
     <form onSubmit={handleSubmit} className="mt-4">
       <h4>📝 Create New Posting</h4>
+
+      {isImageTop && image && (
+        <div className="mb-3 text-center">
+          <img
+            src={image}
+            alt="Preview"
+            style={{ maxWidth: "100%", borderRadius: "12px" }}
+          />
+        </div>
+      )}
+
       <input
         className="form-control my-2"
         placeholder="Title"
@@ -71,6 +85,16 @@ export default function CreatorPostingForm({ onSubmit }) {
         value={image}
         onChange={(e) => setImage(e.target.value)}
       />
+
+      {!isImageTop && image && (
+        <div className="mb-3 text-center">
+          <img
+            src={image}
+            alt="Preview"
+            style={{ maxWidth: "100%", borderRadius: "12px" }}
+          />
+        </div>
+      )}
 
       <div className="form-check my-2">
         <input
