@@ -63,6 +63,7 @@ module.exports = function () {
     require('../app/routes/users.server.routes.js')(app);
     require('../app/routes/templates.server.routes.js')(app);
     require('../app/routes/search.server.routes.js')(app);
+    require('../app/routes/comments.server.routes.js')(app);
 
 
     // Static files
