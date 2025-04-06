@@ -7,7 +7,7 @@ const CreatorGeneralForm = () => {
 
   const handleSubmit = async (data) => {
     await createTemplate({ ...data, templateType: "default" });
-    navigate("/creator/postings");
+    navigate("/recipes");
   };
 
   return (

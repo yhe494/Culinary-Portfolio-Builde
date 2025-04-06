@@ -7,7 +7,7 @@ const CreatorImageTopForm = () => {
 
   const handleSubmit = async (data) => {
     await createTemplate({ ...data, templateType: "imageTop" });
-    navigate("/creator/postings");
+    navigate("/recipes");
   };
 
   return (

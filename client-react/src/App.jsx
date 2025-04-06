@@ -14,7 +14,6 @@ import RecipeDetail from './components/RecipeDetail';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
-// Newly added components for template selection and template-specific posting
 import TemplateSelector from './pages/TemplateSelector';
 import CreatorGeneralForm from './pages/CreatorGeneralForm';
 import CreatorImageTopForm from './pages/CreatorImageTopForm';
@@ -25,10 +24,10 @@ const App = () => {
       <AuthProvider>
         <AppNavbar />
         <Routes>
-          {/* Public Route */}
+          {/* Public */}
           <Route path="/" element={<SignIn />} />
 
-          {/* Admin Routes */}
+          {/* Admin */}
           <Route
             path="/admin"
             element={
@@ -54,9 +53,7 @@ const App = () => {
             }
           />
 
-          {/* Creator Routes */}
-
-          {/* Template Selection (navigation page) */}
+          {/* Creator - Posting Creation Flow */}
           <Route
             path="/creator/create"
             element={
@@ -65,8 +62,6 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-
-          {/* Posting creation: General Template */}
           <Route
             path="/creator/create/general"
             element={
@@ -75,8 +70,6 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-
-          {/* Posting creation: Image Top Template */}
           <Route
             path="/creator/create/imagetop"
             element={
@@ -85,10 +78,8 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-
-          {/* Creator Postings List */}
           <Route
-            path="/creator/list"
+            path="/creator/postings"
             element={
               <ProtectedRoute>
                 <CreatorPostingList />
@@ -96,17 +87,7 @@ const App = () => {
             }
           />
 
-<Route
-  path="/creator/postings"
-  element={
-    <ProtectedRoute>
-      <CreatorPostingList />
-    </ProtectedRoute>
-  }
-/>
-
-
-          {/* Portfolio Editing */}
+          {/* Portfolio - My Profile */}
           <Route
             path="/edit-portfolio"
             element={
@@ -116,22 +97,43 @@ const App = () => {
             }
           />
 
-          {/* Recipe Details */}
+          {/* Link from Navbar: /portfolio → redirect to /edit-portfolio */}
           <Route
-            path="/recipes/:id"
+            path="/portfolio"
             element={
               <ProtectedRoute>
-                <RecipeDetail />
+                <EditPortfolio />
               </ProtectedRoute>
             }
           />
 
-          {/* All Recipes List */}
+          {/* Community Page (Placeholder) */}
+          <Route
+            path="/community"
+            element={
+              <ProtectedRoute>
+                <div className="container mt-4">
+                  <h2>🧑‍🤝‍🧑 Community Page (Coming Soon)</h2>
+                  <p>Here you can add forum, discussion, or shared templates in the future.</p>
+                </div>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Recipes */}
           <Route
             path="/recipes"
             element={
               <ProtectedRoute>
                 <RecipeList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/recipes/:id"
+            element={
+              <ProtectedRoute>
+                <RecipeDetail />
               </ProtectedRoute>
             }
           />
