@@ -8,12 +8,15 @@ import AdminTemplateList from './pages/AdminTemplateList';
 import AppNavbar from './components/Navbar';
 import CreatorPostingCreate from './pages/CreatorPostingCreate';
 import CreatorPostingList from './pages/CreatorPostingList';
-import EditPortfolio from './components/EditPortfolio'; // Imported EditPortfolio component
-// import ViewPortfolio from './components/ViewPortfolio'; // Imported ViewPortfolio component
+import EditPortfolio from './components/EditPortfolio';
 import RecipeList from './components/RecipeList';
 import RecipeDetail from './components/RecipeDetail';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+
+import TemplateSelector from './pages/TemplateSelector';
+import CreatorGeneralForm from './pages/CreatorGeneralForm';
+import CreatorImageTopForm from './pages/CreatorImageTopForm';
 
 const App = () => {
   return (
@@ -24,7 +27,7 @@ const App = () => {
           {/* Public */}
           <Route path="/" element={<SignIn />} />
 
-          {/* Admin Routes */}
+          {/* Admin */}
           <Route
             path="/admin"
             element={
@@ -50,17 +53,33 @@ const App = () => {
             }
           />
 
-          {/* Creator Routes */}
+          {/* Creator - Posting Creation Flow */}
           <Route
             path="/creator/create"
             element={
               <ProtectedRoute>
-                <CreatorPostingCreate />
+                <TemplateSelector />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/creator/list"
+            path="/creator/create/general"
+            element={
+              <ProtectedRoute>
+                <CreatorGeneralForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/creator/create/imagetop"
+            element={
+              <ProtectedRoute>
+                <CreatorImageTopForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/creator/postings"
             element={
               <ProtectedRoute>
                 <CreatorPostingList />
@@ -68,7 +87,7 @@ const App = () => {
             }
           />
 
-          {/* Edit Portfolio Route */}
+          {/* Portfolio - My Profile */}
           <Route
             path="/edit-portfolio"
             element={
@@ -77,16 +96,40 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-          {/* <Route
-            path="/view-portfolio"
-            element={
-           <ProtectedRoute>
-            <ViewPortfolio />
-             </ProtectedRoute>
-         }
-        /> */}
 
-<Route
+          {/* Link from Navbar: /portfolio → redirect to /edit-portfolio */}
+          <Route
+            path="/portfolio"
+            element={
+              <ProtectedRoute>
+                <EditPortfolio />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Community Page (Placeholder) */}
+          <Route
+            path="/community"
+            element={
+              <ProtectedRoute>
+                <div className="container mt-4">
+                  <h2>🧑‍🤝‍🧑 Community Page (Coming Soon)</h2>
+                  <p>Here you can add forum, discussion, or shared templates in the future.</p>
+                </div>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Recipes */}
+          <Route
+            path="/recipes"
+            element={
+              <ProtectedRoute>
+                <RecipeList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/recipes/:id"
             element={
               <ProtectedRoute>
@@ -94,16 +137,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-          <Route 
-            path="/recipes" 
-            element={
-              <ProtectedRoute>
-                <RecipeList />
-              </ProtectedRoute>
-          } />
-          </Routes>
-
-          
+        </Routes>
       </AuthProvider>
     </Router>
   );

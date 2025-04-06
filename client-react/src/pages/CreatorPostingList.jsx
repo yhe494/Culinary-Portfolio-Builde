@@ -8,6 +8,7 @@ export default function CreatorPostingList() {
   const fetchTemplates = async () => {
     try {
       const res = await getTemplates();
+      console.log("🚀 Response data:", res.data);
       setTemplates(res.data);
     } catch (err) {
       console.error("Failed to fetch postings:", err);

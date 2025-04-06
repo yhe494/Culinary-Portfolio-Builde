@@ -1,15 +1,22 @@
 import { useState } from "react";
 
-const CATEGORIES = ['Appetizer', 'Main Course', 'Dessert', 'Beverage', 'Other'];
+const CATEGORIES = ["Appetizer", "Main Course", "Dessert", "Beverage", "Other"];
 
-export default function CreatorPostingForm({ onSubmit }) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [categories, setCategories] = useState([]);
-  const [image, setImage] = useState("");
-  const [ingredients, setIngredients] = useState([]);
-  const [steps, setSteps] = useState([]);
-  const [isPublic, setIsPublic] = useState(true);
+export default function CreatorPostingForm({
+  templateType = "default",
+  initialData = {},
+  onSubmit,
+}) {
+  const [title, setTitle] = useState(initialData.title || "");
+  const [description, setDescription] = useState(initialData.description || "");
+  const [categories, setCategories] = useState(initialData.categories || []);
+  const [image, setImage] = useState(initialData.image || "");
+  const [imageFile, setImageFile] = useState(null);
+  const [ingredients, setIngredients] = useState(initialData.ingredients || []);
+  const [steps, setSteps] = useState(initialData.steps || []);
+  const [isPublic, setIsPublic] = useState(initialData.isPublic ?? true);
+
+  const isImageTop = templateType === "imageTop";
 
   const addIngredient = () => {
     setIngredients([...ingredients, { name: "", quantity: "", unit: "" }]);
@@ -17,6 +24,19 @@ export default function CreatorPostingForm({ onSubmit }) {
 
   const addStep = () => {
     setSteps([...steps, ""]);
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        console.log("📷 Preview image set:", reader.result); 
+        setImage(reader.result); // base64 preview
+        setImageFile(file);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -35,13 +55,30 @@ export default function CreatorPostingForm({ onSubmit }) {
 
   return (
     <form onSubmit={handleSubmit} className="mt-4">
+
+      {/* 🖼️ Image preview for imageTop template */}
+      {isImageTop && image && typeof image === "string" && image.startsWith("data:image") && (
+        <div className="mb-3 text-center">
+          <img
+            src={image}
+            alt="Preview"
+            style={{ maxWidth: "100%", borderRadius: "12px" }}
+          />
+          {imageFile && (
+            <p className="text-muted small">Uploaded: {imageFile.name}</p>
+          )}
+        </div>
+      )}
+
       <h4>📝 Create New Posting</h4>
+
       <input
         className="form-control my-2"
         placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
+
       <textarea
         className="form-control my-2"
         placeholder="Description"
@@ -65,11 +102,12 @@ export default function CreatorPostingForm({ onSubmit }) {
         ))}
       </select>
 
+      <label>Upload Image</label>
       <input
+        type="file"
+        accept="image/*"
         className="form-control my-2"
-        placeholder="Image URL"
-        value={image}
-        onChange={(e) => setImage(e.target.value)}
+        onChange={handleImageChange}
       />
 
       <div className="form-check my-2">
