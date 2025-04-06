@@ -18,26 +18,19 @@ export const AuthProvider = ({ children }) => {
 
         if (response.ok && data.user) {
           setUser(data.user);
-
+        
           const isAdmin = data.user.isAdmin;
           const currentPath = window.location.pathname;
-
-          if (currentPath === '/edit-portfolio') {
-            // Allow navigation to edit portfolio
-          } else if (isAdmin && currentPath.startsWith("/admin")) {
-            // Admin logic
-          } else if (isAdmin) {
-            navigate("/admin");
-          } else if (currentPath.startsWith("/creator")) {
-            // Creator logic
-          } else {
-            navigate("/creator/list");
+        
+          if (currentPath === '/' || currentPath === '/signin') {
+            navigate(isAdmin ? '/admin' : '/creator/list');
           }
-
+        
         } else {
           setUser(null);
           navigate('/');
         }
+        
       } catch (error) {
         console.error('Error checking authentication:', error);
         setUser(null);
@@ -72,7 +65,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, setUser, signOut }}>
+    <AuthContext.Provider value={{ user, setUser, signOut, loading }}>
       {children}
     </AuthContext.Provider>
   );
