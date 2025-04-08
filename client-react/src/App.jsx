@@ -13,6 +13,7 @@ import RecipeList from './components/RecipeList';
 import RecipeDetail from './components/RecipeDetail';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import EditPosting from './components/EditPosting';
 
 import TemplateSelector from './pages/TemplateSelector';
 import CreatorGeneralForm from './pages/CreatorGeneralForm';
@@ -106,6 +107,16 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+
+<Route
+  path="/edit-post/:id"
+  element={
+    <ProtectedRoute>
+      <EditPosting />
+    </ProtectedRoute>
+  }
+/>
+
 
           {/* Community Page (Placeholder) */}
           <Route

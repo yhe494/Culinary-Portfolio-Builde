@@ -1,17 +1,33 @@
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const CATEGORIES = ['Appetizer', 'Main Course', 'Dessert', 'Beverage', 'Other'];
 
 export default function EditPostingForm({ onSubmit, existingData }) {
-  const { user, setUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+
+  // Initial state setup with the existingData passed as a prop
   const [title, setTitle] = useState(existingData?.title || "");
   const [description, setDescription] = useState(existingData?.description || "");
   const [categories, setCategories] = useState(existingData?.categories || []);
   const [image, setImage] = useState(existingData?.image || "");
-  const [ingredients, setIngredients] = useState(existingData?.ingredients || []);
-  const [steps, setSteps] = useState(existingData?.steps || []);
+  const [ingredients, setIngredients] = useState(existingData?.ingredients || [{ name: "", quantity: "", unit: "" }]);
+  const [steps, setSteps] = useState(existingData?.steps || [""]);
   const [isPublic, setIsPublic] = useState(existingData?.isPublic ?? true);
+  const [isUpdated, setIsUpdated] = useState(false); // New state for success message
+
+  // Whenever existingData changes, update the form fields
+  useEffect(() => {
+    if (existingData) {
+      setTitle(existingData.title || "");
+      setDescription(existingData.description || "");
+      setCategories(existingData.categories || []);
+      setImage(existingData.image || "");
+      setIngredients(existingData.ingredients || [{ name: "", quantity: "", unit: "" }]);
+      setSteps(existingData.steps || [""]);
+      setIsPublic(existingData.isPublic ?? true);
+    }
+  }, [existingData]); // This ensures it gets updated if existingData changes
 
   const addIngredient = () => {
     setIngredients([...ingredients, { name: "", quantity: "", unit: "" }]);
@@ -34,22 +50,38 @@ export default function EditPostingForm({ onSubmit, existingData }) {
       user,
     };
     onSubmit(posting);
+    
+    // Show success message
+    setIsUpdated(true);
+
+    // Optionally, hide the success message after a few seconds
+    setTimeout(() => {
+      setIsUpdated(false);
+    }, 3000); // Hide message after 3 seconds
   };
 
   return (
     <form onSubmit={handleSubmit} className="mt-4">
       <h4>✏️ Edit Posting</h4>
+
+      {/* Success Message */}
+      {isUpdated && (
+        <div className="alert alert-success mb-3" role="alert">
+          ✅ Your posting has been updated successfully!
+        </div>
+      )}
+
       <input
         className="form-control my-2"
         placeholder="Title"
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        onChange={(e) => setTitle(e.target.value)} // Handling change for title
       />
       <textarea
         className="form-control my-2"
         placeholder="Description"
         value={description}
-        onChange={(e) => setDescription(e.target.value)}
+        onChange={(e) => setDescription(e.target.value)} // Handling change for description
       />
 
       <label>Select Categories (multiple)</label>
@@ -58,7 +90,7 @@ export default function EditPostingForm({ onSubmit, existingData }) {
         multiple
         value={categories}
         onChange={(e) =>
-          setCategories(Array.from(e.target.selectedOptions, (o) => o.value))
+          setCategories(Array.from(e.target.selectedOptions, (o) => o.value)) // Handling change for categories
         }
       >
         {CATEGORIES.map((cat) => (
@@ -72,7 +104,7 @@ export default function EditPostingForm({ onSubmit, existingData }) {
         className="form-control my-2"
         placeholder="Image URL"
         value={image}
-        onChange={(e) => setImage(e.target.value)}
+        onChange={(e) => setImage(e.target.value)} // Handling change for image
       />
 
       <div className="form-check my-2">
@@ -80,7 +112,7 @@ export default function EditPostingForm({ onSubmit, existingData }) {
           className="form-check-input"
           type="checkbox"
           checked={isPublic}
-          onChange={() => setIsPublic(!isPublic)}
+          onChange={() => setIsPublic(!isPublic)} // Handling change for public checkbox
         />
         <label className="form-check-label">Public</label>
       </div>
@@ -96,7 +128,7 @@ export default function EditPostingForm({ onSubmit, existingData }) {
               onChange={(e) => {
                 const updated = [...ingredients];
                 updated[idx].name = e.target.value;
-                setIngredients(updated);
+                setIngredients(updated); // Handling change for ingredient name
               }}
             />
           </div>
@@ -108,7 +140,7 @@ export default function EditPostingForm({ onSubmit, existingData }) {
               onChange={(e) => {
                 const updated = [...ingredients];
                 updated[idx].quantity = e.target.value;
-                setIngredients(updated);
+                setIngredients(updated); // Handling change for ingredient quantity
               }}
             />
           </div>
@@ -120,7 +152,7 @@ export default function EditPostingForm({ onSubmit, existingData }) {
               onChange={(e) => {
                 const updated = [...ingredients];
                 updated[idx].unit = e.target.value;
-                setIngredients(updated);
+                setIngredients(updated); // Handling change for ingredient unit
               }}
             />
           </div>
@@ -130,7 +162,7 @@ export default function EditPostingForm({ onSubmit, existingData }) {
               className="btn btn-danger"
               onClick={() => {
                 const updated = ingredients.filter((_, i) => i !== idx);
-                setIngredients(updated);
+                setIngredients(updated); // Handling ingredient removal
               }}
             >
               Remove
@@ -156,7 +188,7 @@ export default function EditPostingForm({ onSubmit, existingData }) {
             onChange={(e) => {
               const updated = [...steps];
               updated[idx] = e.target.value;
-              setSteps(updated);
+              setSteps(updated); // Handling change for cooking steps
             }}
           />
           <button
@@ -164,7 +196,7 @@ export default function EditPostingForm({ onSubmit, existingData }) {
             className="btn btn-danger"
             onClick={() => {
               const updated = steps.filter((_, i) => i !== idx);
-              setSteps(updated);
+              setSteps(updated); // Handling step removal
             }}
           >
             Remove
@@ -182,6 +214,7 @@ export default function EditPostingForm({ onSubmit, existingData }) {
       <button type="submit" className="btn btn-success">
         ✅ Update Posting
       </button>
+      
     </form>
   );
 }
