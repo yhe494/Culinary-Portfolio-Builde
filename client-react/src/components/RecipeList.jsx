@@ -10,11 +10,13 @@ const RecipeList = () => {
     const fetchTemplates = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:5001/templates', {
+        const res = await fetch('http://localhost:5001/templates/withAuthor', {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: 'include',
         });
+        
         
         if (!res.ok) {
           throw new Error('Failed to fetch templates');
@@ -44,6 +46,7 @@ const RecipeList = () => {
           <tr>
             <th style={{ width: "80px" }}>No</th>
             <th>Title</th>
+            <th style={{ width: "150px" }}>Author</th>
             <th style={{ width: "100px" }}>Likes</th>
           </tr>
         </thead>
@@ -56,7 +59,9 @@ const RecipeList = () => {
             >
               <td>{index + 1}</td>
               <td>{recipe.title}</td>
-              <td>{recipe.likesCount ?? 0}</td>
+              <td>  {recipe.createdBy?.firstName ?? 'Unknown'} {recipe.createdBy?.lastName ?? ''}
+              </td>
+              <td>{recipe.ratingCount ?? 0}</td>
             </tr>
           ))}
         </tbody>

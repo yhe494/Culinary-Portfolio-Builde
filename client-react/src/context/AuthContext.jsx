@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
           const currentPath = window.location.pathname;
         
           if (currentPath === '/' || currentPath === '/signin') {
-            navigate(isAdmin ? '/admin' : '/creator/list');
+            navigate(isAdmin ? '/admin' : '/portfolio');
           }
         
         } else {
