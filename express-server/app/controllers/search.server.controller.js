@@ -1,4 +1,5 @@
-const Post = require("../models/template.server.model");
+const mongoose = require('mongoose');
+const RecipeTemplate = mongoose.model('RecipeTemplate');
 
 // Controller function to search posts by keyword
 exports.searchPosts = async (req, res) => {
@@ -8,11 +9,13 @@ exports.searchPosts = async (req, res) => {
   }
 
   try {
-    const posts = await Post.find({
+    const posts = await RecipeTemplate.find({
       $or: [
         { title: { $regex: q, $options: "i" } },
         { description: { $regex: q, $options: "i" } },
-        { ingredients: { $regex: q, $options: "i" } }
+        // Ingredients is a mixed type field in your schema, so we need a different approach
+        // This assumes ingredients contain text that can be searched
+        { "ingredients": { $regex: q, $options: "i" } }
       ]
     });
 
