@@ -20,11 +20,14 @@ module.exports = function () {
         app.use(compress());
     }
 
-    // Basic middleware
+    // Updated body parser with increased size limit
     app.use(bodyParser.urlencoded({
-        extended: true
+        extended: true,
+        limit: '20mb'
     }));
-    app.use(bodyParser.json());
+    app.use(bodyParser.json({ limit: '20mb' }));
+
+    // Basic middleware
     app.use(cookieParser());
     app.use(methodOverride('_method'));
 
@@ -64,7 +67,6 @@ module.exports = function () {
     require('../app/routes/templates.server.routes.js')(app);
     require('../app/routes/search.server.routes.js')(app);
     require('../app/routes/comments.server.routes.js')(app);
-
 
     // Static files
     app.use(express.static('./public'));
