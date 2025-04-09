@@ -11,6 +11,7 @@ import CreatorPostingList from './pages/CreatorPostingList';
 import EditPortfolio from './components/EditPortfolio';
 import RecipeList from './components/RecipeList';
 import RecipeDetail from './components/RecipeDetail';
+import UserProfile from './components/UserProfile';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import EditPosting from './components/EditPosting';
@@ -108,15 +109,24 @@ const App = () => {
             }
           />
 
-<Route
-  path="/edit-post/:id"
-  element={
-    <ProtectedRoute>
-      <EditPosting />
-    </ProtectedRoute>
-  }
-/>
+          {/* User Profile Page */}
+          <Route
+            path="/user-profile/:userId"
+            element={
+              <ProtectedRoute>
+                <UserProfile />
+              </ProtectedRoute>
+            }
+          />
 
+          <Route
+            path="/edit-post/:id"
+            element={
+              <ProtectedRoute>
+                <EditPosting />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Community Page (Placeholder) */}
           <Route
@@ -148,6 +158,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          
         </Routes>
       </AuthProvider>
     </Router>
