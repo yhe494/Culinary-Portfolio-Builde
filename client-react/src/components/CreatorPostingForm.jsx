@@ -70,7 +70,7 @@ export default function CreatorPostingForm({
         </div>
       )}
 
-      <h4>📝 Create New Posting</h4>
+      {/* <h4>📝 Create New Posting</h4> */}
 
       <input
         className="form-control my-2"
@@ -102,13 +102,18 @@ export default function CreatorPostingForm({
         ))}
       </select>
 
-      <label>Upload Image</label>
-      <input
-        type="file"
-        accept="image/*"
-        className="form-control my-2"
-        onChange={handleImageChange}
-      />
+      {templateType === "imageTop" && (
+  <>
+    <label>Upload Image</label>
+    <input
+      type="file"
+      accept="image/*"
+      className="form-control my-2"
+      onChange={handleImageChange}
+    />
+  </>
+)}
+
 
       <div className="form-check my-2">
         <input

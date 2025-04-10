@@ -12,7 +12,7 @@ const CreatorGeneralForm = () => {
 
   return (
     <div className="container mt-4">
-      <h2>📝 Template 1</h2>
+      <h2>📝 Create Posting with Default Template </h2>
       <CreatorPostingForm templateType="default" onSubmit={handleSubmit} />
     </div>
   );
