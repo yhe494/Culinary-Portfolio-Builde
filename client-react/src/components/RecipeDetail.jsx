@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams,Link } from 'react-router-dom';
 import {
   Container,
   Badge,
@@ -8,10 +8,6 @@ import {
   Button,
 } from 'react-bootstrap';
 import { AuthContext } from '../context/AuthContext';
-import React, { useEffect, useState, useContext } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Container, Badge, Image, ListGroup } from 'react-bootstrap';
-import { AuthContext } from "../context/AuthContext";
 
 const RecipeDetail = () => {
   const { id } = useParams();
