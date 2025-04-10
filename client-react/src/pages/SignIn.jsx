@@ -38,7 +38,7 @@ const AuthPage = () => {
       if (response.ok) {
         localStorage.setItem('token', data.token);
         setUser({ email: data.user.email, isAdmin: data.user.isAdmin });
-        navigate(data.user.isAdmin ? '/admin' : '/student');
+        navigate(data.user.isAdmin ? '/admin' : '/portfolio');
       } else {
         setError(data.message || 'Sign-in failed');
       }

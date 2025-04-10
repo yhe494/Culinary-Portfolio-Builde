@@ -31,7 +31,7 @@ export default function CreatorPostingForm({
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        console.log("📷 Preview image set:", reader.result); 
+        console.log("📷 Preview image set:", reader.result);
         setImage(reader.result); // base64 preview
         setImageFile(file);
       };
@@ -70,7 +70,7 @@ export default function CreatorPostingForm({
         </div>
       )}
 
-      <h4>📝 Create New Posting</h4>
+      {/* <h4>📝 Create New Posting</h4> */}
 
       <input
         className="form-control my-2"
@@ -102,13 +102,18 @@ export default function CreatorPostingForm({
         ))}
       </select>
 
-      <label>Upload Image</label>
-      <input
-        type="file"
-        accept="image/*"
-        className="form-control my-2"
-        onChange={handleImageChange}
-      />
+      {templateType === "imageTop" && (
+        <>
+          <label>Upload Image</label>
+          <input
+            type="file"
+            accept="image/*"
+            className="form-control my-2"
+            onChange={handleImageChange}
+          />
+        </>
+      )}
+
 
       <div className="form-check my-2">
         <input
@@ -206,17 +211,21 @@ export default function CreatorPostingForm({
           </button>
         </div>
       ))}
-      <button
-        type="button"
-        className="btn btn-outline-secondary mb-4"
-        onClick={addStep}
-      >
-        + Add Step
-      </button>
+      <div className="d-flex justify-content-start align-items-center gap-3 mb-4">
+        <button
+          type="button"
+          className="btn btn-outline-secondary"
+          onClick={addStep}
+        >
+          + Add Step
+        </button>
 
-      <button type="submit" className="btn btn-success">
-        ✅ Save Posting
-      </button>
+        <button type="submit" className="btn btn-success">
+          ✅ Save Posting
+        </button>
+      </div>
+
+
     </form>
   );
 }

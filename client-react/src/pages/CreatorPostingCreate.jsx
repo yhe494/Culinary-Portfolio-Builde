@@ -18,7 +18,7 @@ export default function CreatorPostingCreate() {
 
   return (
     <div className="container mt-4">
-      <h2>📝 Create New Posting</h2>
+      {/* <h2>📝 Create New Posting</h2> */}
       <CreatorTemplateForm onSubmit={handleSubmit} />
     </div>
   );
