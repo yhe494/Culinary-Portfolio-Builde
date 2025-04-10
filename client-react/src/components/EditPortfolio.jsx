@@ -7,10 +7,14 @@ import { useContext } from "react";
 export default function EditPortfolioForm({ onSubmit, initialData }) {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  // const [firstName, setFirstName] = useState(user?.firstName || "");
+  // const [lastName, setLastName] = useState(user?.lastName || "");
+  // const [bio, setBio] = useState(user?.bio || "");
+  // const [website, setWebsite] = useState(user?.website || "");
   const [firstName, setFirstName] = useState(user?.firstName || "");
   const [lastName, setLastName] = useState(user?.lastName || "");
-  const [bio, setBio] = useState(user?.bio || "");
-  const [website, setWebsite] = useState(user?.website || "");
+  const [bio, setBio] = useState(user?.profile?.bios || "");
+  const [website, setWebsite] = useState(user?.profile?.website || "");
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);

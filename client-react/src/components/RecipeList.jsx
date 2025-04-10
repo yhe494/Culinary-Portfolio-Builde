@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Container, Button, Table, Form, InputGroup, Spinner, Alert } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from "../context/AuthContext";
 
 const RecipeList = () => {
+  const { user } = useContext(AuthContext);
   const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
@@ -11,6 +13,7 @@ const RecipeList = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
+  
 
   // Load all recipes initially or handle search query if present
   useEffect(() => {
@@ -101,11 +104,15 @@ const RecipeList = () => {
     navigate('/recipes');
     fetchAllRecipes();
   };
+  
 
   return (
     <Container className="mt-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>🍽 Recipes</h2>
+        <div>
+          <h2>🍽 Recipes</h2>
+          {user && <p className="text-muted mb-0">Welcome, {user.firstName || "Chef"}!</p>}
+        </div>
         <Button variant="primary" onClick={() => navigate('/creator/create')}>
           + Create Recipe
         </Button>
@@ -140,6 +147,7 @@ const RecipeList = () => {
             </Button>
           )}
         </InputGroup>
+        
       </Form>
 
       {error && (
