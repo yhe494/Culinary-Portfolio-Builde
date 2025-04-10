@@ -150,6 +150,63 @@ exports.requiresLogin = (req, res, next) => {
   }
 };
 
+
+exports.rateRecipe = async (req, res) => {
+  const userId = req.id; 
+  const { score } = req.body;
+  const templateId = req.params.templateId;
+
+  if (!score || score < 1 || score > 5) {
+    return res.status(400).json({ message: "Score must be between 1 and 5" });
+  }
+
+  try {
+    const template = await Template.findById(templateId);
+    if (!template) {
+      return res.status(404).json({ message: "Recipe not found" });
+    }
+
+    const alreadyRated = template.ratings.some(
+      (r) => r.user.toString() === userId
+    );
+
+    if (alreadyRated) {
+      return res.status(400).json({ message: "You already rated this recipe" });
+    }
+
+    template.ratings.push({
+      user: userId,
+      score: score,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    const totalScore = template.ratings.reduce((sum, r) => sum + r.score, 0);
+    template.averageRating = Number((totalScore / template.ratings.length).toFixed(1));
+    template.ratingCount = template.ratings.length;
+
+    await template.save();
+
+    res.status(200).json(template);
+  } catch (err) {
+    console.error("Rating failed:", err);
+    res.status(500).json({ message: "Failed to rate the recipe" });
+  }
+};
+
+exports.listWithAuthor = async (req, res, next) => {
+  try {
+    const templates = await Template.find({})
+      .sort({ createdAt: -1 })
+      .populate("createdBy", "firstName lastName");
+
+    res.json(templates);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+
 // Middleware to check if the user is an admin
 exports.requiresAdmin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {

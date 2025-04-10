@@ -11,15 +11,27 @@ module.exports = function (app) {
     templates.list
   );
 
+  app.post(
+    "/templates/:templateId/rate",
+    templates.requiresLogin,
+    templates.rateRecipe
+  );
+
+  app.get(
+    "/templates/withAuthor",
+    templates.requiresLogin,
+    templates.listWithAuthor
+  );
+
   // 🔓 Get templates by userID and sort by date created
-  app.get("/templates/user/:userId", templates.requiresLogin, templates.getTemplatesByUserID);
+  app.get(
+    "/templates/user/:userId",
+    templates.requiresLogin,
+    templates.getTemplatesByUserID
+  );
 
   // ✅ POST: Any logged-in user can create a template (temporary use for creators)
-  app.post(
-    "/template",
-    templates.requiresLogin,
-    templates.create
-  );
+  app.post("/template", templates.requiresLogin, templates.create);
 
   // 🔐 Individual template operations: protected for editing/deleting
   app
@@ -30,5 +42,4 @@ module.exports = function (app) {
 
   // Template ID parameter preloading
   app.param("templateId", templates.templateByID);
-
 };
