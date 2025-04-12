@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import React from "react";
 const CATEGORIES = ["Appetizer", "Main Course", "Dessert", "Beverage", "Other"];
 
 export default function CreatorPostingForm({
