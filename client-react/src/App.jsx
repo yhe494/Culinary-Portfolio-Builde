@@ -19,6 +19,7 @@ import EditPosting from './components/EditPosting';
 import TemplateSelector from './pages/TemplateSelector';
 import CreatorGeneralForm from './pages/CreatorGeneralForm';
 import CreatorImageTopForm from './pages/CreatorImageTopForm';
+import './App.css';
 
 const App = () => {
   return (
