@@ -71,3 +71,18 @@ npm run dev
 ```
 
 The frontend will run on <http://localhost:5173>
+
+## 🔧 Testing
+
+### Install dependency
+
+```bash
+cd express-server
+npm install --save-dev jest supertest
+```
+
+### Run testing
+
+```bash
+npm test
+```
