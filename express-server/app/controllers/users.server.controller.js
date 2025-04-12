@@ -33,9 +33,11 @@ exports.create = async function (req, res, next) {
     console.log("User created successfully: ", user);
     res.json(user);
   } catch (err) {
-    console.error(getErrorMessage(err));
-    return next(err);
+    const message = getErrorMessage(err);
+    console.error(message);
+    res.status(500).json({ message }); 
   }
+  
 };
 
 // Return all users
