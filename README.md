@@ -37,13 +37,27 @@ cd Student-Class-Management-System
 
 ### Backend Setup
 
+At the root directory:
 ```bash
-cd express-server
 npm install
 ```
 
 Create a development.js file in express-server/config/env/ with your MongoDB connection
 (follow the format from development.js.template)
+
+### Environment Variables
+
+Create a `.env` file in the root directory by copying the provided template:
+```bash
+cp .env.template .env
+```
+
+Then update the values in `.env` with your specific configuration:
+- `PORT`: The port number for the server (default: 5001)
+- `NODE_ENV`: The environment (development, production, etc.)
+- `db`: Your MongoDB connection string
+- `SESSION_SECRET`: Secret for session management
+- `SECRET_KEY`: Secret key for encryption/security
 
 ### Frontend Setup
 
@@ -54,21 +68,13 @@ npm install
 
 ## 🚀 Running the Application
 
-### Start the Backend Server
 
+At the root directory:
 ```bash
-cd express-server
 npm run dev
 ```
 
 The server will run on <http://localhost:5001>
-
-### Start the Frontend Development Server
-
-```bash
-cd client-react
-npm run dev
-```
 
 The frontend will run on <http://localhost:5173>
 
