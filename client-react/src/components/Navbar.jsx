@@ -32,7 +32,7 @@ const AppNavbar = () => {
         <Navbar.Toggle aria-controls="main-navbar" />
         <Navbar.Collapse id="main-navbar">
           <Nav className="me-auto">
-            <Nav.Link onClick={() => navigate('/portfolio')}>Portfolio</Nav.Link>
+            {/* <Nav.Link onClick={() => navigate('/portfolio')}>Portfolio</Nav.Link> */}
             <Nav.Link onClick={() => navigate('/recipes')}>Recipes</Nav.Link>
             <Nav.Link onClick={() => navigate('/community')}>Community</Nav.Link>
           </Nav>
