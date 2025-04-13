@@ -61,12 +61,22 @@ module.exports = function () {
     app.set('view engine', 'ejs');
     app.engine('html', require('ejs').renderFile);
 
-    // Routes
-    require('../app/routes/index.server.routes.js')(app);
-    require('../app/routes/users.server.routes.js')(app);
-    require('../app/routes/templates.server.routes.js')(app);
-    require('../app/routes/search.server.routes.js')(app);
-    require('../app/routes/comments.server.routes.js')(app);
+    // Create API router
+    const apiRouter = express.Router();
+
+    // Use API router with prefix only in production
+    if (process.env.NODE_ENV === 'production') {
+        app.use('/api', apiRouter);
+    } else {
+        app.use('', apiRouter); // No prefix in development
+    }
+
+    // Routes - all use the apiRouter
+    require('../app/routes/index.server.routes.js')(apiRouter);
+    require('../app/routes/users.server.routes.js')(apiRouter);
+    require('../app/routes/templates.server.routes.js')(apiRouter);
+    require('../app/routes/search.server.routes.js')(apiRouter);
+    require('../app/routes/comments.server.routes.js')(apiRouter);
 
     // Static files
     app.use(express.static('./public'));
