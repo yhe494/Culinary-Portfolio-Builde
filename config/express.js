@@ -1,5 +1,5 @@
 const passport = require('passport');
-var config = require('./config'),
+var config = require('./config.js'),
     express = require('express'),
     morgan = require('morgan'),
     compress = require('compression'),
@@ -54,7 +54,7 @@ module.exports = function () {
 
     // Initialize passport
     app.use(passport.initialize());
-    require('./passport'); // Include the passport configuration
+    require('./passport.js'); // Include the passport configuration
 
     // View engine setup
     app.set('views', './app/views');

@@ -20,7 +20,7 @@ const RecipeDetail = () => {
     const fetchRecipe = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch(`http://localhost:5001/templates/${id}`, {
+        const res = await fetch(`/api/templates/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -48,7 +48,7 @@ const RecipeDetail = () => {
     const fetchCreatorInfo = async (creatorId) => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch(`http://localhost:5001/users/${creatorId}`, {
+        const res = await fetch(`/api/users/${creatorId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -71,7 +71,7 @@ const RecipeDetail = () => {
     const token = localStorage.getItem('token');
 
     try {
-      const res = await fetch(`http://localhost:5001/templates/${id}/rate`, {
+      const res = await fetch(`/api/templates/${id}/rate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

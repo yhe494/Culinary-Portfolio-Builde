@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch('http://localhost:5001/read_cookie', {
+        const response = await fetch('/api/read_cookie', {
           credentials: 'include',
         });
         const data = await response.json();
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
 
   const signOut = async () => {
     try {
-      const response = await fetch('http://localhost:5001/signout', {
+      const response = await fetch('/api/signout', {
         method: 'POST',
         credentials: 'include',
       });

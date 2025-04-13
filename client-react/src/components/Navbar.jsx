@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Navbar, Nav, Container, Button, Stack } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { signout } from '../api/api';
 
 const AppNavbar = () => {
   const navigate = useNavigate();
@@ -10,18 +11,10 @@ const AppNavbar = () => {
 
   const handleLogout = async () => {
     try {
-      //this response using backend domain to send request to backend directly,
-      //check when the app needs to deploy, backend domain could be changed
-      const response = await fetch('http://localhost:5001/signout', {
-        method: 'POST',
-        credentials: 'include',
-      });
-  
-      if (response.ok) {
-        setUser(null);
-        localStorage.removeItem('token');
-        navigate('/');
-      }
+      await signout();
+      setUser(null);
+      localStorage.removeItem('token');
+      navigate('/');
     } catch (err) {
       console.error('Logout error:', err);
     }

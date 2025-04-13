@@ -1,9 +1,10 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, Alert, Row, Col } from 'react-bootstrap';
+import { Form, Button, Alert } from 'react-bootstrap';
 import { AuthContext } from '../context/AuthContext';
-import "./Signin.css"
-import chefIcon from "../assets/chef.png"
+import { signin, register } from '../api/api';
+import "./Signin.css";
+import chefIcon from "../assets/chef.png";
 
 const AuthPage = () => {
   const [email, setEmail] = useState('');
@@ -26,24 +27,14 @@ const AuthPage = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5001/signin', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        localStorage.setItem('token', data.token);
-        setUser({ email: data.user.email, isAdmin: data.user.isAdmin });
-        navigate(data.user.isAdmin ? '/admin' : '/portfolio');
-      } else {
-        setError(data.message || 'Sign-in failed');
-      }
+      const { data } = await signin({ email, password });
+      
+      localStorage.setItem('token', data.token);
+      setUser({ email: data.user.email, isAdmin: data.user.isAdmin });
+      navigate(data.user.isAdmin ? '/admin' : '/portfolio');
     } catch (error) {
-      setError('An error occurred during sign-in. Please try again.');
+      console.error(error);
+      setError(error.response?.data?.message || 'Sign-in failed. Please check your credentials.');
     }
   };
 
@@ -52,20 +43,11 @@ const AuthPage = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5001/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(registerData),
-      });
-      const data = await response.json();
-      
-      if (response.ok) {
-        alert('Registration successful. Please sign in.');
-      } else {
-        setError(data.message || 'Registration failed');
-      }
+      await register(registerData);
+      alert('Registration successful. Please sign in.');
     } catch (error) {
-      setError('An error occurred during registration. Please try again.');
+      console.error(error);
+      setError(error.response?.data?.message || 'Registration failed.');
     }
   };
 

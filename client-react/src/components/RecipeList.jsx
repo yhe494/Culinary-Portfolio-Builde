@@ -34,7 +34,7 @@ const RecipeList = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5001/templates/withAuthor', {
+      const res = await fetch('/api/templates/withAuthor', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -66,7 +66,7 @@ const RecipeList = () => {
     setError('');
     
     try {
-      const response = await axios.get(`http://localhost:5001/search?q=${encodeURIComponent(query)}`);
+      const response = await axios.get(`/api/search?q=${encodeURIComponent(query)}`);
       
       // Prioritize title matches
       const sortedResults = response.data.sort((a, b) => {
