@@ -117,7 +117,13 @@ const UserProfile = () => {
             {userData.profile?.website && (
               <div className="mb-3">
                 <h5>Website</h5>
-                <a href={userData.profile.website} target="_blank" rel="noopener noreferrer">
+                <a 
+                  href={userData.profile.website && !userData.profile.website.startsWith('http') 
+                    ? `https://${userData.profile.website}` 
+                    : userData.profile.website} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
                   {userData.profile.website}
                 </a>
               </div>
