@@ -6,6 +6,7 @@ const mongoose = require('./config/mongoose');
 const cors = require('cors');
 const config = require('./config/env/development');
 const path = require('path');
+const expressModule = require('express');
 
 const port = process.env.PORT || config.port;
 // Create a new mongoose connection instance
@@ -42,7 +43,7 @@ app.use(cors(corsOptions));
 // In production, serve the React frontend
 if (process.env.NODE_ENV === 'production') {
     // Serve static files from the React app
-    app.use(express.static(path.join(__dirname, 'client-react/dist')));
+    app.use(expressModule.static(path.join(__dirname, 'client-react/dist')));
 
     // For any route not handled by the API, serve the React app
     app.get('*', (req, res) => {
