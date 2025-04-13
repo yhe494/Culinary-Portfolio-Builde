@@ -30,8 +30,9 @@ const AuthPage = () => {
       const { data } = await signin({ email, password });
       
       localStorage.setItem('token', data.token);
-      setUser({ email: data.user.email, isAdmin: data.user.isAdmin });
-      navigate(data.user.isAdmin ? '/admin' : '/portfolio');
+      setUser(data.user);
+      //setUser({ email: data.user.email, isAdmin: data.user.isAdmin });
+      navigate(data.user.isAdmin ? '/admin' : '/recipes');
     } catch (error) {
       console.error(error);
       setError(error.response?.data?.message || 'Sign-in failed. Please check your credentials.');
