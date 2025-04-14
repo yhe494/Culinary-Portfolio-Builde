@@ -20,14 +20,14 @@ const UserProfile = () => {
         const token = localStorage.getItem('token');
         
         // Fetch user profile data
-        const userResponse = await axios.get(`http://localhost:5001/users/${userId}`, {
+        const userResponse = await axios.get(`/api/users/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
         
         // Fetch user's recipes
-        const recipesResponse = await axios.get(`http://localhost:5001/templates/user/${userId}`, {
+        const recipesResponse = await axios.get(`/api/templates/user/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -117,7 +117,13 @@ const UserProfile = () => {
             {userData.profile?.website && (
               <div className="mb-3">
                 <h5>Website</h5>
-                <a href={userData.profile.website} target="_blank" rel="noopener noreferrer">
+                <a 
+                  href={userData.profile.website && !userData.profile.website.startsWith('http') 
+                    ? `https://${userData.profile.website}` 
+                    : userData.profile.website} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
                   {userData.profile.website}
                 </a>
               </div>

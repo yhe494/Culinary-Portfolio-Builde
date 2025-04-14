@@ -20,7 +20,7 @@ export default function EditPortfolioForm({ onSubmit, initialData }) {
       try {
         const token= localStorage.getItem('token');
 
-        const response = await axios.get(`http://localhost:5001/templates/user/${user?.id}`, {
+        const response = await axios.get(`/api/templates/user/${user?.id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           }
@@ -55,7 +55,7 @@ export default function EditPortfolioForm({ onSubmit, initialData }) {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch(`http://localhost:5001/users/${user.id}`, {
+      const response = await fetch(`/api/users/${user.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -84,7 +84,7 @@ export default function EditPortfolioForm({ onSubmit, initialData }) {
     try {
       const token= localStorage.getItem('token');
 
-      await axios.delete(`http://localhost:5001/templates/${id}`, {
+      await axios.delete(`/api/templates/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         }
